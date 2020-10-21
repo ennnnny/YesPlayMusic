@@ -40,7 +40,7 @@ export default {
   },
   created() {
     newAlbums({
-      area: "EA",
+      area: "ALL",
       limit: 100,
     }).then((data) => {
       this.albums = data.albums;

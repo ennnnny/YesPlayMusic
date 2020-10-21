@@ -64,6 +64,13 @@ export function toplists() {
   });
 }
 
+export function toplistsDetail() {
+  return request({
+    url: "/toplist/detail",
+    method: "get",
+  });
+}
+
 export function subscribePlaylist(params) {
   // 必选参数 :
   // t : 类型,1:收藏,2:取消收藏 id : 歌单 id

@@ -1,6 +1,6 @@
 <template>
   <div class="home" v-show="show">
-    <div class="index-row">
+    <!--<div class="index-row">
       <div class="title">
         by Apple Music
       </div>
@@ -10,7 +10,7 @@
         :subText="'appleMusic'"
         :imageSize="1024"
       />
-    </div>
+    </div> -->
     <div class="index-row">
       <div class="title">
         {{ $t("home.recommendPlaylist") }}
@@ -53,9 +53,9 @@
 </template>
 
 <script>
-import { toplists, recommendPlaylist } from "@/api/playlist";
+import { toplistsDetail, recommendPlaylist } from "@/api/playlist";
 import { toplistOfArtists } from "@/api/artist";
-import { byAppleMusic } from "@/utils/staticPlaylist";
+// import { byAppleMusic } from "@/utils/staticPlaylist";
 import { newAlbums } from "@/api/album";
 import NProgress from "nprogress";
 import CoverRow from "@/components/CoverRow.vue";
@@ -79,9 +79,9 @@ export default {
     };
   },
   computed: {
-    byAppleMusic() {
-      return byAppleMusic;
-    }
+    // byAppleMusic() {
+    //   return byAppleMusic;
+    // }
   },
   methods: {
     loadData() {
@@ -94,7 +94,7 @@ export default {
         this.show = true;
       });
       newAlbums({
-        area: "EA",
+        area: "ALL",
         limit: 10
       }).then(data => {
         this.newReleasesAlbum.items = data.albums;
@@ -110,7 +110,7 @@ export default {
           indexs.includes(index)
         );
       });
-      toplists().then(data => {
+      toplistsDetail().then(data => {
         this.topList.items = data.list.filter(l =>
           this.topList.ids.includes(l.id)
         );

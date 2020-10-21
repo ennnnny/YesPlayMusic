@@ -48,7 +48,7 @@ import {
   topPlaylist,
   highQualityPlaylist,
   recommendPlaylist,
-  toplists,
+  toplistsDetail,
 } from "@/api/playlist";
 
 import ButtonTwoTone from "@/components/ButtonTwoTone.vue";
@@ -116,7 +116,7 @@ export default {
           this.hasMore = data.more;
         });
       } else if (this.activeCategory === "排行榜") {
-        toplists().then((data) => {
+        toplistsDetail().then((data) => {
           this.updatePlaylist(data.list);
         });
       } else {
