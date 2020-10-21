@@ -6,6 +6,15 @@ function resolve(dir) {
 module.exports = {
   devServer: {
     disableHostCheck: true,
+    proxy: {
+      '/api': {
+          target: process.env.VUE_APP_PROXY_URL, //API服务器的地址
+          changeOrigin: true,
+          pathRewrite: {
+              '^/api': ''
+          }
+      }
+    },
   },
   pwa: {
     name: "YesPlayMusic",
