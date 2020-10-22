@@ -17,7 +17,7 @@ export default {
 
       commit("updateCurrentTrack", track);
       updateMediaSessionMetaData(track);
-      document.title = `${track.name} · ${track.ar[0].name} - YesPlayMusic`;
+      document.title = `${track.name} · ${track.ar[0].name} - 泡面音乐`;
 
       if (track.playable === false) {
         dispatch("nextTrack");

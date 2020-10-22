@@ -7,7 +7,7 @@ import zhCN from "./lang/zh-CN.js";
 Vue.use(VueI18n);
 
 const i18n = new VueI18n({
-  locale: "en",
+  locale: "zh-CN",
   messages: {
     en,
     "zh-CN": zhCN
