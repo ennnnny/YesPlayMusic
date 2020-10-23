@@ -21,6 +21,7 @@ module.exports = {
           }
       }
     },
+    port: process.env.DEV_SERVER_PORT || 8080
   },
   pwa: {
     name: "泡面音乐",
