@@ -7,12 +7,14 @@ export function getMP3(id) {
     store.state.settings?.musicQuality !== undefined
       ? store.state.settings.musicQuality
       : 320000;
+  let proxy = true;
   return request({
     url: "/song/url",
     method: "get",
     params: {
       id,
       br,
+      proxy,
     },
   });
 }

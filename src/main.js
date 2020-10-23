@@ -9,9 +9,9 @@ import "@/utils/filters";
 import { initMediaSession } from "@/utils/mediaSession";
 import "./registerServiceWorker";
 
-import * as Sentry from "@sentry/browser";
-import { Vue as VueIntegration } from "@sentry/integrations";
-import { Integrations } from "@sentry/tracing";
+// import * as Sentry from "@sentry/browser";
+// import { Vue as VueIntegration } from "@sentry/integrations";
+// import { Integrations } from "@sentry/tracing";
 
 Vue.use(VueAnalytics, {
   id: "UA-180189423-1",
