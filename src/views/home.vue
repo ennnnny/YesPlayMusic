@@ -1,9 +1,7 @@
 <template>
   <div class="home" v-show="show">
     <div class="index-row">
-      <div class="title">
-        by Apple Music
-      </div>
+      <div class="title"> by Apple Music </div>
       <CoverRow
         :type="'playlist'"
         :items="byAppleMusic"
@@ -49,6 +47,16 @@
         :imageSize="1024"
       />
     </div>
+
+    <footer>
+      <ButtonTwoTone
+        :iconClass="'settings'"
+        :color="'grey'"
+        @click.native="goTo('/settings')"
+      >
+        {{ $t("footer.settings") }}
+      </ButtonTwoTone>
+    </footer>
   </div>
 </template>
 
@@ -59,10 +67,11 @@ import { byAppleMusic } from "@/utils/staticPlaylist";
 import { newAlbums } from "@/api/album";
 import NProgress from "nprogress";
 import CoverRow from "@/components/CoverRow.vue";
+import ButtonTwoTone from "@/components/ButtonTwoTone.vue";
 
 export default {
   name: "Home",
-  components: { CoverRow },
+  components: { CoverRow, ButtonTwoTone },
   data() {
     return {
       show: false,
@@ -70,36 +79,36 @@ export default {
       newReleasesAlbum: { items: [] },
       topList: {
         items: [],
-        ids: [19723756, 180106, 60198, 3812895, 60131]
+        ids: [19723756, 180106, 60198, 3812895, 60131],
       },
       recommendArtists: {
         items: [],
-        indexs: []
-      }
+        indexs: [],
+      },
     };
   },
   computed: {
     byAppleMusic() {
       return byAppleMusic;
-    }
+    },
   },
   methods: {
     loadData() {
       if (!this.show) NProgress.start();
       recommendPlaylist({
-        limit: 10
-      }).then(data => {
+        limit: 10,
+      }).then((data) => {
         this.recommendPlaylist.items = data.result;
         NProgress.done();
         this.show = true;
       });
       newAlbums({
         area: "EA",
-        limit: 10
-      }).then(data => {
+        limit: 10,
+      }).then((data) => {
         this.newReleasesAlbum.items = data.albums;
       });
-      toplistOfArtists(2).then(data => {
+      toplistOfArtists(2).then((data) => {
         let indexs = [];
         while (indexs.length < 5) {
           let tmp = ~~(Math.random() * 100);
@@ -110,16 +119,19 @@ export default {
           indexs.includes(index)
         );
       });
-      toplists().then(data => {
-        this.topList.items = data.list.filter(l =>
+      toplists().then((data) => {
+        this.topList.items = data.list.filter((l) =>
           this.topList.ids.includes(l.id)
         );
       });
-    }
+    },
+    goTo(path) {
+      this.$router.push({ path });
+    },
   },
   activated() {
     this.loadData();
-  }
+  },
 };
 </script>
 
@@ -181,5 +193,11 @@ export default {
       // margin-top: 4px;
     }
   }
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
 }
 </style>

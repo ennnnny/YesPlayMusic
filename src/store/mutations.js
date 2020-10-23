@@ -100,4 +100,10 @@ export default {
       return t;
     });
   },
+  changeLang(state, lang) {
+    state.settings.lang = lang;
+  },
+  changeMusicQuality(state, value) {
+    state.settings.musicQuality = value;
+  },
 };
