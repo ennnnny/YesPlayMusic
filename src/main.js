@@ -22,24 +22,24 @@ Vue.config.productionTip = false;
 
 initMediaSession();
 
-if (process.env.VUE_APP_ENABLE_SENTRY === "true") {
-  console.log("VUE_APP_ENABLE_SENTRY");
-  Sentry.init({
-    dsn:
-      "https://30aaa25152974f48971912a394ab6bc3@o436528.ingest.sentry.io/5477409",
-    integrations: [
-      new VueIntegration({
-        Vue,
-        tracing: true,
-      }),
-      new Integrations.BrowserTracing(),
-    ],
+// if (process.env.VUE_APP_ENABLE_SENTRY === "true") {
+//   console.log("VUE_APP_ENABLE_SENTRY");
+//   Sentry.init({
+//     dsn:
+//       "https://30aaa25152974f48971912a394ab6bc3@o436528.ingest.sentry.io/5477409",
+//     integrations: [
+//       new VueIntegration({
+//         Vue,
+//         tracing: true,
+//       }),
+//       new Integrations.BrowserTracing(),
+//     ],
 
-    // We recommend adjusting this value in production, or using tracesSampler
-    // for finer control
-    tracesSampleRate: 1.0,
-  });
-}
+//     // We recommend adjusting this value in production, or using tracesSampler
+//     // for finer control
+//     tracesSampleRate: 1.0,
+//   });
+// }
 
 new Vue({
   i18n,

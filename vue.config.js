@@ -3,7 +3,12 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 
+const version = require("./package.json").version;
+const webPath = process.env.VUE_APP_CDN_URL+version+`/dist/`;
+// const webPath = process.env.VUE_APP_CDN_URL + version + "/";
+
 module.exports = {
+  publicPath: process.env.VUE_APP_DISABLE_CDN === "1" ? webPath : "/",
   devServer: {
     disableHostCheck: true,
     proxy: {
