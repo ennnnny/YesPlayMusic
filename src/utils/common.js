@@ -4,7 +4,7 @@
 export function isTrackPlayable(track) {
   let result = {
     playable: true,
-    reason: ""
+    reason: "",
   };
   if (track.noCopyrightRcmd !== null && track.noCopyrightRcmd !== undefined) {
     result.playable = true;
@@ -30,7 +30,7 @@ export function isTrackPlayable(track) {
 }
 
 export function mapTrackPlayableStatus(tracks) {
-  return tracks.map(t => {
+  return tracks.map((t) => {
     let result = isTrackPlayable(t);
     t.playable = result.playable;
     t.reason = result.reason;
@@ -50,14 +50,31 @@ export function randomNum(minNum, maxNum) {
 }
 
 export function shuffleAList(list) {
-  let sortsList = list.map(t => t.sort);
+  let sortsList = list.map((t) => t.sort);
   for (let i = 1; i < sortsList.length; i++) {
     const random = Math.floor(Math.random() * (i + 1));
     [sortsList[i], sortsList[random]] = [sortsList[random], sortsList[i]];
   }
   let newSorts = {};
-  list.map(track => {
+  list.map((track) => {
     newSorts[track.id] = sortsList.pop();
   });
   return newSorts;
+}
+
+export function throttle(fn, time) {
+  let isRun = false;
+  return function () {
+    if (isRun) return;
+    isRun = true;
+    fn.apply(this, arguments);
+    setTimeout(() => {
+      isRun = false;
+    }, time);
+  };
+}
+
+export function updateHttps(url) {
+  if (!url) return "";
+  return url.replace(/^http:/, "https:");
 }

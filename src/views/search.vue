@@ -1,6 +1,8 @@
 <template>
   <div class="search" v-show="show">
-    <h1><span>Search for</span> "{{ keywords }}"</h1>
+    <h1>
+      <span>{{ $t("search.searchFor") }}</span> "{{ keywords }}"
+    </h1>
     <div class="result" v-if="isExistResult">
       <div class="row">
         <div class="artists" v-if="result.hasOwnProperty('artist')">
@@ -130,7 +132,7 @@ export default {
   components: {
     Cover,
     TrackList,
-    MvRow
+    MvRow,
   },
   data() {
     return {
@@ -139,7 +141,7 @@ export default {
       mvs: [],
       type: 1,
       limit: 30,
-      offset: 0
+      offset: 0,
     };
   },
   computed: {
@@ -153,26 +155,26 @@ export default {
     },
     isExistResult() {
       return Object.keys(this.result).length;
-    } 
+    },
   },
   methods: {
     goToAlbum(id) {
       this.$router.push({ name: "album", params: { id } });
     },
     playTrackInSearchResult(id) {
-      let track = this.tracks.find(t => t.id === id);
+      let track = this.tracks.find((t) => t.id === id);
       appendTrackToPlayerList(track, true);
     },
     getData(keywords) {
-      search({ keywords: keywords, type: 1018 }).then(data => {
+      search({ keywords: keywords, type: 1018 }).then((data) => {
         this.result = data.result;
         NProgress.done();
         this.show = true;
       });
-      search({ keywords: keywords, type: 1004 }).then(data => {
+      search({ keywords: keywords, type: 1004 }).then((data) => {
         this.mvs = data.result.mvs;
       });
-    }
+    },
   },
   created() {
     this.getData(this.$route.query.keywords);
@@ -182,7 +184,7 @@ export default {
     next();
     NProgress.start();
     this.getData(to.query.keywords);
-  }
+  },
 };
 </script>
 
