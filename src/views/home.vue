@@ -1,9 +1,7 @@
 <template>
   <div class="home" v-show="show">
-    <!--<div class="index-row">
-      <div class="title">
-        by Apple Music
-      </div>
+    <!--<div class="index-row"  v-if="settings.showPlaylistsByAppleMusic !== false>
+      <div class="title"> by Apple Music </div>
       <CoverRow
         :type="'playlist'"
         :items="byAppleMusic"
@@ -56,7 +54,7 @@
         :color="'grey'"
         @click.native="goTo('/settings')"
       >
-        {{ $t("footer.settings") }}
+        {{ $t("settings.settings") }}
       </ButtonTwoTone>
     </footer>
   </div>
@@ -68,6 +66,7 @@ import { toplistOfArtists } from "@/api/artist";
 // import { byAppleMusic } from "@/utils/staticPlaylist";
 import { newAlbums } from "@/api/album";
 import NProgress from "nprogress";
+import { mapState } from "vuex";
 import CoverRow from "@/components/CoverRow.vue";
 import ButtonTwoTone from "@/components/ButtonTwoTone.vue";
 
@@ -90,9 +89,10 @@ export default {
     };
   },
   computed: {
+    ...mapState(["settings"]),
     // byAppleMusic() {
     //   return byAppleMusic;
-    // }
+    // },
   },
   methods: {
     loadData() {
@@ -160,40 +160,11 @@ export default {
   margin-bottom: 20px;
   font-size: 28px;
   font-weight: 700;
-
+  color: var(--color-text);
   a {
     font-size: 13px;
     font-weight: 600;
-    color: rgba(0, 0, 0, 0.68);
-  }
-}
-
-.item {
-  margin: 12px 12px 24px 12px;
-  .text {
-    width: 208px;
-    margin-top: 8px;
-    .name {
-      font-size: 16px;
-      font-weight: 600;
-      color: rgba(0, 0, 0, 0.88);
-      line-height: 20px;
-
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
-    }
-    .info {
-      font-size: 12px;
-      color: rgba(0, 0, 0, 0.68);
-      line-height: 18px;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
-      // margin-top: 4px;
-    }
+    opacity: 0.68;
   }
 }
 
