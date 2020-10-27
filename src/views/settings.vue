@@ -90,6 +90,7 @@
           </div>
         </div>
       </div>
+      <!--
       <div class="item">
         <div class="left">
           <div class="title"> Show Playlists by Apple Music</div>
@@ -106,6 +107,7 @@
           </div>
         </div>
       </div>
+      -->
     </div>
   </div>
 </template>
