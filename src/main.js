@@ -1,5 +1,6 @@
 import Vue from "vue";
-import VueAnalytics from "vue-analytics";
+// import VueAnalytics from "vue-analytics";
+import VueGtag from "vue-gtag";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -13,10 +14,16 @@ import "./registerServiceWorker";
 // import { Vue as VueIntegration } from "@sentry/integrations";
 // import { Integrations } from "@sentry/tracing";
 
-Vue.use(VueAnalytics, {
-  id: "UA-180189423-1",
-  router,
-});
+// Vue.use(VueAnalytics, {
+//   id: "UA-180189423-1",
+//   router,
+// });
+Vue.use(VueGtag, {
+  config: { id: "G-V5357H0HVE" },
+  includes: [
+    { id: 'G-9VKPWXNS05' }
+  ]
+}, router);
 
 Vue.config.productionTip = false;
 

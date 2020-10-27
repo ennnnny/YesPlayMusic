@@ -9,7 +9,7 @@ const webPath = process.env.VUE_APP_CDN_URL+`/dist/`;
 // const webPath = process.env.VUE_APP_CDN_URL + version + "/";
 
 module.exports = {
-  publicPath: process.env.VUE_APP_DISABLE_CDN === "1" ? webPath : "/",
+  publicPath: process.env.VUE_APP_ENABLE_CDN === "1" ? webPath : "/",
   devServer: {
     disableHostCheck: true,
     proxy: {
