@@ -7,6 +7,7 @@ import store from "@/store";
 export function isTrackPlayable(track) {
   let result = {
     playable: true,
+    playType: 1,
     reason: "",
   };
   if (track.fee === 1 || track.privilege?.fee === 1) {
@@ -26,6 +27,11 @@ export function isTrackPlayable(track) {
     result.playable = false;
     result.reason = "No Copyright";
   }
+  if (result.playable === false) {
+    result.playable = true;
+    result.playType = 2;
+    result.reason = "";
+  }
   return result;
 }
 
@@ -33,6 +39,7 @@ export function mapTrackPlayableStatus(tracks) {
   return tracks.map((t) => {
     let result = isTrackPlayable(t);
     t.playable = result.playable;
+    t.playType = result.playType;
     t.reason = result.reason;
     return t;
   });

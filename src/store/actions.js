@@ -45,7 +45,7 @@ export default {
           dispatch("nextTrack");
         });
       }
-      if (isAccountLoggedIn()) {
+      if (isAccountLoggedIn() || track.playType === 2) {
         let tracks = localforage.createInstance({
           name: "tracks",
         });
