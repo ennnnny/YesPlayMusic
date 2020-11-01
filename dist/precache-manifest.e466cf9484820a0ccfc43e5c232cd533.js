@@ -64,7 +64,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "https://cdn.jsdelivr.net/gh/ennnnny/YesPlayMusic/dist/css/chunk-fcf27708.b56894c4.css"
   },
   {
-    "revision": "03b4b76afb7c4c4ba94a",
+    "revision": "86b72c726451df12ea9d",
     "url": "https://cdn.jsdelivr.net/gh/ennnnny/YesPlayMusic/dist/css/index.a7d3c4e3.css"
   },
   {
@@ -84,7 +84,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "https://cdn.jsdelivr.net/gh/ennnnny/YesPlayMusic/dist/img/logos/yesplaymusic.png"
   },
   {
-    "revision": "731b186b7ca242f5fe81d6750555d977",
+    "revision": "e9c0ed77720859e6fb63dacb969db9cc",
     "url": "https://cdn.jsdelivr.net/gh/ennnnny/YesPlayMusic/dist/index.html"
   },
   {
@@ -156,8 +156,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "https://cdn.jsdelivr.net/gh/ennnnny/YesPlayMusic/dist/js/chunk-vendors.05074d37.js"
   },
   {
-    "revision": "03b4b76afb7c4c4ba94a",
-    "url": "https://cdn.jsdelivr.net/gh/ennnnny/YesPlayMusic/dist/js/index.321e56e0.js"
+    "revision": "86b72c726451df12ea9d",
+    "url": "https://cdn.jsdelivr.net/gh/ennnnny/YesPlayMusic/dist/js/index.b1d79bb2.js"
   },
   {
     "revision": "150cfcb3ad28651b3f1f36059310e8d8",
