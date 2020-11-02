@@ -67,6 +67,7 @@ import { toplistOfArtists } from "@/api/artist";
 import { newAlbums } from "@/api/album";
 import NProgress from "nprogress";
 import { mapState } from "vuex";
+
 import CoverRow from "@/components/CoverRow.vue";
 import ButtonTwoTone from "@/components/ButtonTwoTone.vue";
 
