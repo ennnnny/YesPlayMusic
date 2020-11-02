@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "https://cdn.jsdelivr.net/gh/ennnnny/YesPlayMusic/dist/precache-manifest.e466cf9484820a0ccfc43e5c232cd533.js"
+  "https://cdn.jsdelivr.net/gh/ennnnny/YesPlayMusic/dist/precache-manifest.edfe491499364fa552f56eaa746e8c31.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "YesPlayMusic"});
