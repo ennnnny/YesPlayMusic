@@ -20,7 +20,7 @@ export function cacheTrack(id) {
   return getMP3(id).then((data) => {
     return axios
       .get(data.data[0].url, {
-      // .get(data.data[0].url.replace(/^http:/, "https:"), {
+        // .get(data.data[0].url.replace(/^http:/, "https:"), {
         responseType: "blob",
       })
       .then((data) => {

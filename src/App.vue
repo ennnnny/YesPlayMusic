@@ -52,173 +52,235 @@ export default {
 
 /* barlow-regular */
 @font-face {
-  font-family: 'Barlow';
+  font-family: "Barlow";
   font-style: normal;
   font-weight: regular;
-  src: url('//lib.baomitu.com/fonts/barlow/barlow-regular.eot'); /* IE9 Compat Modes */
-  src: local('Barlow'), local('Barlow-Normal'),
-  url('//lib.baomitu.com/fonts/barlow/barlow-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//lib.baomitu.com/fonts/barlow/barlow-regular.woff2') format('woff2'), /* Super Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-regular.woff') format('woff'), /* Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('//lib.baomitu.com/fonts/barlow/barlow-regular.svg#Barlow') format('svg'); /* Legacy iOS */
+  src: url("//lib.baomitu.com/fonts/barlow/barlow-regular.eot"); /* IE9 Compat Modes */
+  src: local("Barlow"), local("Barlow-Normal"),
+    url("//lib.baomitu.com/fonts/barlow/barlow-regular.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("//lib.baomitu.com/fonts/barlow/barlow-regular.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-regular.woff") format("woff"),
+    /* Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-regular.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("//lib.baomitu.com/fonts/barlow/barlow-regular.svg#Barlow")
+      format("svg"); /* Legacy iOS */
 }
 
 /* barlow-regular */
 @font-face {
-  font-family: 'Barlow';
+  font-family: "Barlow";
   font-style: normal;
   font-weight: regular;
-  src: url('//lib.baomitu.com/fonts/barlow/barlow-regular.eot'); /* IE9 Compat Modes */
-  src: local('Barlow'), local('Barlow-Normal'),
-  url('//lib.baomitu.com/fonts/barlow/barlow-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//lib.baomitu.com/fonts/barlow/barlow-regular.woff2') format('woff2'), /* Super Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-regular.woff') format('woff'), /* Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('//lib.baomitu.com/fonts/barlow/barlow-regular.svg#Barlow') format('svg'); /* Legacy iOS */
+  src: url("//lib.baomitu.com/fonts/barlow/barlow-regular.eot"); /* IE9 Compat Modes */
+  src: local("Barlow"), local("Barlow-Normal"),
+    url("//lib.baomitu.com/fonts/barlow/barlow-regular.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("//lib.baomitu.com/fonts/barlow/barlow-regular.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-regular.woff") format("woff"),
+    /* Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-regular.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("//lib.baomitu.com/fonts/barlow/barlow-regular.svg#Barlow")
+      format("svg"); /* Legacy iOS */
 }
 
 /* barlow-500 */
 @font-face {
-  font-family: 'Barlow';
+  font-family: "Barlow";
   font-style: normal;
   font-weight: 500;
-  src: url('//lib.baomitu.com/fonts/barlow/barlow-500.eot'); /* IE9 Compat Modes */
-  src: local('Barlow'), local('Barlow-Normal'),
-  url('//lib.baomitu.com/fonts/barlow/barlow-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//lib.baomitu.com/fonts/barlow/barlow-500.woff2') format('woff2'), /* Super Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-500.woff') format('woff'), /* Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-500.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('//lib.baomitu.com/fonts/barlow/barlow-500.svg#Barlow') format('svg'); /* Legacy iOS */
+  src: url("//lib.baomitu.com/fonts/barlow/barlow-500.eot"); /* IE9 Compat Modes */
+  src: local("Barlow"), local("Barlow-Normal"),
+    url("//lib.baomitu.com/fonts/barlow/barlow-500.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("//lib.baomitu.com/fonts/barlow/barlow-500.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-500.woff") format("woff"),
+    /* Modern Browsers */ url("//lib.baomitu.com/fonts/barlow/barlow-500.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("//lib.baomitu.com/fonts/barlow/barlow-500.svg#Barlow") format("svg"); /* Legacy iOS */
 }
 
 /* barlow-600 */
 @font-face {
-  font-family: 'Barlow';
+  font-family: "Barlow";
   font-style: normal;
   font-weight: 600;
-  src: url('//lib.baomitu.com/fonts/barlow/barlow-600.eot'); /* IE9 Compat Modes */
-  src: local('Barlow'), local('Barlow-Normal'),
-  url('//lib.baomitu.com/fonts/barlow/barlow-600.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//lib.baomitu.com/fonts/barlow/barlow-600.woff2') format('woff2'), /* Super Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-600.woff') format('woff'), /* Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-600.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('//lib.baomitu.com/fonts/barlow/barlow-600.svg#Barlow') format('svg'); /* Legacy iOS */
+  src: url("//lib.baomitu.com/fonts/barlow/barlow-600.eot"); /* IE9 Compat Modes */
+  src: local("Barlow"), local("Barlow-Normal"),
+    url("//lib.baomitu.com/fonts/barlow/barlow-600.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("//lib.baomitu.com/fonts/barlow/barlow-600.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-600.woff") format("woff"),
+    /* Modern Browsers */ url("//lib.baomitu.com/fonts/barlow/barlow-600.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("//lib.baomitu.com/fonts/barlow/barlow-600.svg#Barlow") format("svg"); /* Legacy iOS */
 }
 
 /* barlow-700 */
 @font-face {
-  font-family: 'Barlow';
+  font-family: "Barlow";
   font-style: normal;
   font-weight: 700;
-  src: url('//lib.baomitu.com/fonts/barlow/barlow-700.eot'); /* IE9 Compat Modes */
-  src: local('Barlow'), local('Barlow-Normal'),
-  url('//lib.baomitu.com/fonts/barlow/barlow-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//lib.baomitu.com/fonts/barlow/barlow-700.woff2') format('woff2'), /* Super Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-700.woff') format('woff'), /* Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-700.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('//lib.baomitu.com/fonts/barlow/barlow-700.svg#Barlow') format('svg'); /* Legacy iOS */
+  src: url("//lib.baomitu.com/fonts/barlow/barlow-700.eot"); /* IE9 Compat Modes */
+  src: local("Barlow"), local("Barlow-Normal"),
+    url("//lib.baomitu.com/fonts/barlow/barlow-700.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("//lib.baomitu.com/fonts/barlow/barlow-700.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-700.woff") format("woff"),
+    /* Modern Browsers */ url("//lib.baomitu.com/fonts/barlow/barlow-700.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("//lib.baomitu.com/fonts/barlow/barlow-700.svg#Barlow") format("svg"); /* Legacy iOS */
 }
 
 /* barlow-800 */
 @font-face {
-  font-family: 'Barlow';
+  font-family: "Barlow";
   font-style: normal;
   font-weight: 800;
-  src: url('//lib.baomitu.com/fonts/barlow/barlow-800.eot'); /* IE9 Compat Modes */
-  src: local('Barlow'), local('Barlow-Normal'),
-  url('//lib.baomitu.com/fonts/barlow/barlow-800.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//lib.baomitu.com/fonts/barlow/barlow-800.woff2') format('woff2'), /* Super Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-800.woff') format('woff'), /* Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-800.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('//lib.baomitu.com/fonts/barlow/barlow-800.svg#Barlow') format('svg'); /* Legacy iOS */
+  src: url("//lib.baomitu.com/fonts/barlow/barlow-800.eot"); /* IE9 Compat Modes */
+  src: local("Barlow"), local("Barlow-Normal"),
+    url("//lib.baomitu.com/fonts/barlow/barlow-800.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("//lib.baomitu.com/fonts/barlow/barlow-800.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-800.woff") format("woff"),
+    /* Modern Browsers */ url("//lib.baomitu.com/fonts/barlow/barlow-800.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("//lib.baomitu.com/fonts/barlow/barlow-800.svg#Barlow") format("svg"); /* Legacy iOS */
 }
 
 /* barlow-900 */
 @font-face {
-  font-family: 'Barlow';
+  font-family: "Barlow";
   font-style: normal;
   font-weight: 900;
-  src: url('//lib.baomitu.com/fonts/barlow/barlow-900.eot'); /* IE9 Compat Modes */
-  src: local('Barlow'), local('Barlow-Normal'),
-  url('//lib.baomitu.com/fonts/barlow/barlow-900.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//lib.baomitu.com/fonts/barlow/barlow-900.woff2') format('woff2'), /* Super Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-900.woff') format('woff'), /* Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-900.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('//lib.baomitu.com/fonts/barlow/barlow-900.svg#Barlow') format('svg'); /* Legacy iOS */
+  src: url("//lib.baomitu.com/fonts/barlow/barlow-900.eot"); /* IE9 Compat Modes */
+  src: local("Barlow"), local("Barlow-Normal"),
+    url("//lib.baomitu.com/fonts/barlow/barlow-900.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("//lib.baomitu.com/fonts/barlow/barlow-900.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-900.woff") format("woff"),
+    /* Modern Browsers */ url("//lib.baomitu.com/fonts/barlow/barlow-900.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("//lib.baomitu.com/fonts/barlow/barlow-900.svg#Barlow") format("svg"); /* Legacy iOS */
 }
 
 /* barlow-500 */
 @font-face {
-  font-family: 'Barlow';
+  font-family: "Barlow";
   font-style: normal;
   font-weight: 500;
-  src: url('//lib.baomitu.com/fonts/barlow/barlow-500.eot'); /* IE9 Compat Modes */
-  src: local('Barlow'), local('Barlow-Normal'),
-  url('//lib.baomitu.com/fonts/barlow/barlow-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//lib.baomitu.com/fonts/barlow/barlow-500.woff2') format('woff2'), /* Super Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-500.woff') format('woff'), /* Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-500.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('//lib.baomitu.com/fonts/barlow/barlow-500.svg#Barlow') format('svg'); /* Legacy iOS */
+  src: url("//lib.baomitu.com/fonts/barlow/barlow-500.eot"); /* IE9 Compat Modes */
+  src: local("Barlow"), local("Barlow-Normal"),
+    url("//lib.baomitu.com/fonts/barlow/barlow-500.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("//lib.baomitu.com/fonts/barlow/barlow-500.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-500.woff") format("woff"),
+    /* Modern Browsers */ url("//lib.baomitu.com/fonts/barlow/barlow-500.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("//lib.baomitu.com/fonts/barlow/barlow-500.svg#Barlow") format("svg"); /* Legacy iOS */
 }
 
 /* barlow-600 */
 @font-face {
-  font-family: 'Barlow';
+  font-family: "Barlow";
   font-style: normal;
   font-weight: 600;
-  src: url('//lib.baomitu.com/fonts/barlow/barlow-600.eot'); /* IE9 Compat Modes */
-  src: local('Barlow'), local('Barlow-Normal'),
-  url('//lib.baomitu.com/fonts/barlow/barlow-600.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//lib.baomitu.com/fonts/barlow/barlow-600.woff2') format('woff2'), /* Super Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-600.woff') format('woff'), /* Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-600.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('//lib.baomitu.com/fonts/barlow/barlow-600.svg#Barlow') format('svg'); /* Legacy iOS */
+  src: url("//lib.baomitu.com/fonts/barlow/barlow-600.eot"); /* IE9 Compat Modes */
+  src: local("Barlow"), local("Barlow-Normal"),
+    url("//lib.baomitu.com/fonts/barlow/barlow-600.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("//lib.baomitu.com/fonts/barlow/barlow-600.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-600.woff") format("woff"),
+    /* Modern Browsers */ url("//lib.baomitu.com/fonts/barlow/barlow-600.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("//lib.baomitu.com/fonts/barlow/barlow-600.svg#Barlow") format("svg"); /* Legacy iOS */
 }
 
 /* barlow-700 */
 @font-face {
-  font-family: 'Barlow';
+  font-family: "Barlow";
   font-style: normal;
   font-weight: 700;
-  src: url('//lib.baomitu.com/fonts/barlow/barlow-700.eot'); /* IE9 Compat Modes */
-  src: local('Barlow'), local('Barlow-Normal'),
-  url('//lib.baomitu.com/fonts/barlow/barlow-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//lib.baomitu.com/fonts/barlow/barlow-700.woff2') format('woff2'), /* Super Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-700.woff') format('woff'), /* Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-700.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('//lib.baomitu.com/fonts/barlow/barlow-700.svg#Barlow') format('svg'); /* Legacy iOS */
+  src: url("//lib.baomitu.com/fonts/barlow/barlow-700.eot"); /* IE9 Compat Modes */
+  src: local("Barlow"), local("Barlow-Normal"),
+    url("//lib.baomitu.com/fonts/barlow/barlow-700.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("//lib.baomitu.com/fonts/barlow/barlow-700.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-700.woff") format("woff"),
+    /* Modern Browsers */ url("//lib.baomitu.com/fonts/barlow/barlow-700.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("//lib.baomitu.com/fonts/barlow/barlow-700.svg#Barlow") format("svg"); /* Legacy iOS */
 }
 
 /* barlow-800 */
 @font-face {
-  font-family: 'Barlow';
+  font-family: "Barlow";
   font-style: normal;
   font-weight: 800;
-  src: url('//lib.baomitu.com/fonts/barlow/barlow-800.eot'); /* IE9 Compat Modes */
-  src: local('Barlow'), local('Barlow-Normal'),
-  url('//lib.baomitu.com/fonts/barlow/barlow-800.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//lib.baomitu.com/fonts/barlow/barlow-800.woff2') format('woff2'), /* Super Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-800.woff') format('woff'), /* Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-800.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('//lib.baomitu.com/fonts/barlow/barlow-800.svg#Barlow') format('svg'); /* Legacy iOS */
+  src: url("//lib.baomitu.com/fonts/barlow/barlow-800.eot"); /* IE9 Compat Modes */
+  src: local("Barlow"), local("Barlow-Normal"),
+    url("//lib.baomitu.com/fonts/barlow/barlow-800.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("//lib.baomitu.com/fonts/barlow/barlow-800.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-800.woff") format("woff"),
+    /* Modern Browsers */ url("//lib.baomitu.com/fonts/barlow/barlow-800.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("//lib.baomitu.com/fonts/barlow/barlow-800.svg#Barlow") format("svg"); /* Legacy iOS */
 }
 
 /* barlow-900 */
 @font-face {
-  font-family: 'Barlow';
+  font-family: "Barlow";
   font-style: normal;
   font-weight: 900;
-  src: url('//lib.baomitu.com/fonts/barlow/barlow-900.eot'); /* IE9 Compat Modes */
-  src: local('Barlow'), local('Barlow-Normal'),
-  url('//lib.baomitu.com/fonts/barlow/barlow-900.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//lib.baomitu.com/fonts/barlow/barlow-900.woff2') format('woff2'), /* Super Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-900.woff') format('woff'), /* Modern Browsers */
-  url('//lib.baomitu.com/fonts/barlow/barlow-900.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('//lib.baomitu.com/fonts/barlow/barlow-900.svg#Barlow') format('svg'); /* Legacy iOS */
+  src: url("//lib.baomitu.com/fonts/barlow/barlow-900.eot"); /* IE9 Compat Modes */
+  src: local("Barlow"), local("Barlow-Normal"),
+    url("//lib.baomitu.com/fonts/barlow/barlow-900.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("//lib.baomitu.com/fonts/barlow/barlow-900.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("//lib.baomitu.com/fonts/barlow/barlow-900.woff") format("woff"),
+    /* Modern Browsers */ url("//lib.baomitu.com/fonts/barlow/barlow-900.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("//lib.baomitu.com/fonts/barlow/barlow-900.svg#Barlow") format("svg"); /* Legacy iOS */
 }
-
-
 
 :root {
   --color-body-bg: #ffffff;

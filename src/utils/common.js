@@ -31,6 +31,9 @@ export function isTrackPlayable(track) {
     result.playable = true;
     result.playType = 2;
     result.reason = "";
+  // } else if (track.privilege?.cp === 0 || track.playType === 2) {
+  } else if (track.fee === 0) {
+    result.playType = 2;
   }
   return result;
 }
