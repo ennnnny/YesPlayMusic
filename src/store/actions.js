@@ -46,7 +46,7 @@ export default {
           dispatch("nextTrack");
         });
       }
-      if (isAccountLoggedIn()) {
+      if (isAccountLoggedIn() || track.playType === 2) {
         if (store.state.settings.automaticallyCacheSongs === true) {
           let tracks = localforage.createInstance({
             name: "tracks",
