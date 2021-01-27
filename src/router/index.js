@@ -123,13 +123,22 @@ const router = new VueRouter({
   },
 });
 
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err);
+};
+
 router.beforeEach((to, from, next) => {
   // 需要登录的逻辑
   if (to.meta.requireLogin) {
     if (isLooseLoggedIn()) {
       next();
     } else {
-      next({ path: "/login" });
+      if (process.env.IS_ELECTRON === true) {
+        next({ path: "/login/account" });
+      } else {
+        next({ path: "/login" });
+      }
     }
   } else {
     next();

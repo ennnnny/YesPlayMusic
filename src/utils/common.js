@@ -10,6 +10,10 @@ export function isTrackPlayable(track) {
     playType: 1,
     reason: "",
   };
+  // cloud storage judgement logic
+  if (isAccountLoggedIn() && track?.privilege?.cs) {
+    return result;
+  }
   if (track.fee === 1 || track.privilege?.fee === 1) {
     if (isAccountLoggedIn() && store.state.data.user.vipType === 11) {
       result.playable = true;
@@ -19,13 +23,16 @@ export function isTrackPlayable(track) {
     }
   } else if (track.fee === 4 || track.privilege?.fee === 4) {
     result.playable = false;
-    result.reason = "Paid Album";
+    result.reason = "付费专辑";
   } else if (
     track.noCopyrightRcmd !== null &&
     track.noCopyrightRcmd !== undefined
   ) {
     result.playable = false;
-    result.reason = "No Copyright";
+    result.reason = "无版权";
+  } else if (track.privilege?.st < 0 && isAccountLoggedIn()) {
+    result.playable = false;
+    result.reason = "已下架";
   }
   if (result.playable === false) {
     result.playable = true;
@@ -38,8 +45,14 @@ export function isTrackPlayable(track) {
   return result;
 }
 
-export function mapTrackPlayableStatus(tracks) {
+export function mapTrackPlayableStatus(tracks, privileges = []) {
   return tracks.map((t) => {
+    const privilege = privileges.find((item) => item.id === t.id) || {};
+    if (t.privilege) {
+      Object.assign(t.privilege, privilege);
+    } else {
+      t.privilege = privilege;
+    }
     let result = isTrackPlayable(t);
     t.playable = result.playable;
     t.playType = result.playType;
@@ -190,16 +203,25 @@ export function splitAlbumTitle(title) {
 }
 
 export function bytesToSize(bytes) {
-  var marker = 1024; // Change to 1000 if required
-  var decimal = 2; // Change as required
-  var kiloBytes = marker;
-  var megaBytes = marker * marker;
-  var gigaBytes = marker * marker * marker;
+  let marker = 1024; // Change to 1000 if required
+  let decimal = 2; // Change as required
+  let kiloBytes = marker;
+  let megaBytes = marker * marker;
+  let gigaBytes = marker * marker * marker;
 
-  if (bytes < kiloBytes) return bytes + " Bytes";
+  let lang = store.state.settings.lang;
+
+  if (bytes < kiloBytes) return bytes + (lang === "en" ? " Bytes" : "字节");
   else if (bytes < megaBytes)
     return (bytes / kiloBytes).toFixed(decimal) + " KB";
   else if (bytes < gigaBytes)
     return (bytes / megaBytes).toFixed(decimal) + " MB";
   else return (bytes / gigaBytes).toFixed(decimal) + " GB";
+}
+
+export function formatTrackTime(value) {
+  if (!value) return "";
+  let min = ~~((value / 60) % 60);
+  let sec = (~~(value % 60)).toString().padStart(2, "0");
+  return `${min}:${sec}`;
 }

@@ -14,16 +14,11 @@
               :key="artist.id"
             >
               <Cover
-                :url="artist.img1v1Url | resizeImage"
-                :showBlackShadow="true"
-                :hoverEffect="true"
-                :showPlayButton="true"
-                :type="`artist`"
+                :imageUrl="getArtistImageUrl(artist)"
+                type="artist"
                 :id="artist.id"
-                :size="128"
-                :playButtonSize="36"
-                :shadowMargin="8"
-                :radius="100"
+                :fixedSize="128"
+                :playButtonSize="30"
               />
               <div class="name">
                 <router-link :to="`/artist/${artist.id}`">{{
@@ -43,16 +38,11 @@
             >
               <div>
                 <Cover
-                  :url="album.picUrl | resizeImage"
-                  :showBlackShadow="true"
-                  :hoverEffect="true"
-                  :showPlayButton="true"
-                  :type="`album`"
+                  :imageUrl="album.picUrl | resizeImage"
+                  type="album"
                   :id="album.id"
-                  :size="128"
-                  :playButtonSize="36"
-                  :shadowMargin="8"
-                  :radius="8"
+                  :fixedSize="128"
+                  :playButtonSize="30"
                 />
               </div>
               <div class="name">
@@ -72,12 +62,12 @@
 
       <div class="tracks" v-if="result.hasOwnProperty('song')">
         <div class="section-title">{{ $t("search.song") }}</div>
-        <TrackList :tracks="tracks" :type="'tracklist'" />
+        <TrackList :tracks="tracks" type="tracklist" />
       </div>
 
       <div class="mvs" v-if="mvs !== null && mvs.length > 0">
         <div class="section-title">{{ $t("search.mv") }}</div>
-        <MvRow class="mv-row" :mvs="mvs.slice(0, 5)" />
+        <MvRow :mvs="mvs.slice(0, 5)" />
       </div>
 
       <div class="playlists" v-if="result.hasOwnProperty('playList')">
@@ -90,16 +80,11 @@
           >
             <div>
               <Cover
-                :url="playlist.coverImgUrl | resizeImage"
-                :showBlackShadow="true"
-                :hoverEffect="true"
-                :showPlayButton="true"
-                :type="`playlist`"
+                :imageUrl="playlist.coverImgUrl | resizeImage"
+                type="playlist"
                 :id="playlist.id"
-                :size="128"
-                :playButtonSize="36"
-                :shadowMargin="8"
-                :radius="8"
+                :fixedSize="128"
+                :playButtonSize="30"
               />
             </div>
             <div class="name">
@@ -120,7 +105,6 @@
 <script>
 import { mapState } from "vuex";
 import NProgress from "nprogress";
-import { appendTrackToPlayerList } from "@/utils/play";
 import { search } from "@/api/others";
 
 import Cover from "@/components/Cover.vue";
@@ -163,7 +147,7 @@ export default {
     },
     playTrackInSearchResult(id) {
       let track = this.tracks.find((t) => t.id === id);
-      appendTrackToPlayerList(track, true);
+      this.$store.state.player.appendTrackToPlayerList(track, true);
     },
     getData(keywords) {
       search({ keywords: keywords, type: 1018 }).then((data) => {
@@ -174,6 +158,17 @@ export default {
       search({ keywords: keywords, type: 1004 }).then((data) => {
         this.mvs = data.result.mvs;
       });
+    },
+    getArtistImageUrl(artist) {
+      if (artist.img1v1Url) {
+        let img1v1ID = artist.img1v1Url.split("/");
+        img1v1ID = img1v1ID[img1v1ID.length - 1];
+        if (img1v1ID === "5639395138885805.jpg") {
+          // 没有头像的歌手，网易云返回的img1v1Url并不是正方形的 😅😅😅
+          return "https://p2.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg?param=512x512";
+        }
+      }
+      return artist.img1v1Url + "?param=512x512";
     },
   },
   created() {
@@ -209,6 +204,7 @@ h1 {
 
 .row {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .artists,
@@ -270,12 +266,5 @@ h1 {
 .no-results {
   margin-top: 24px;
   font-size: 24px;
-}
-
-.mvs {
-  .mv-row {
-    margin-top: -12px;
-    margin-bottom: -24px;
-  }
 }
 </style>

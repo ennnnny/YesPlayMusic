@@ -35,6 +35,7 @@
           <svg-icon icon-class="search" />
           <div class="input">
             <input
+              ref="searchInput"
               :placeholder="inputFocus ? '' : $t('nav.search')"
               v-model="keywords"
               @keydown.enter="goToSearchPage"
@@ -102,12 +103,23 @@ nav {
     right: 10vw;
     left: 10vw;
   }
-  backdrop-filter: saturate(180%) blur(30px);
+  backdrop-filter: saturate(180%) blur(20px);
 
-  // background: var(--color-body-bg);
-  // background-color: rgba(255, 255, 255, 0.86);
   background-color: var(--color-navbar-bg);
   z-index: 100;
+  -webkit-app-region: drag;
+}
+
+@media (max-width: 1336px) {
+  nav {
+    padding: 0 5vw;
+  }
+}
+
+@supports (-moz-appearance: none) {
+  nav {
+    background-color: var(--color-body-bg);
+  }
 }
 
 .navigation-buttons {
@@ -118,13 +130,24 @@ nav {
     height: 24px;
     width: 24px;
   }
+  button {
+    -webkit-app-region: no-drag;
+  }
 }
+@media (max-width: 970px) {
+  .navigation-buttons {
+    flex: unset;
+  }
+}
+
 .navigation-links {
   flex: 1;
   display: flex;
   justify-content: center;
   text-transform: uppercase;
+  user-select: none;
   a {
+    -webkit-app-region: no-drag;
     font-size: 18px;
     font-weight: 700;
     text-decoration: none;
@@ -137,7 +160,7 @@ nav {
       left: 12px;
     }
     &:hover {
-      background: var(--color-secondary-bg);
+      background: var(--color-secondary-bg-for-transparent);
     }
     &:active {
       transform: scale(0.92);
@@ -158,14 +181,14 @@ nav {
 
 .search-box {
   display: flex;
-
   justify-content: flex-end;
+  -webkit-app-region: no-drag;
 
   .container {
     display: flex;
     align-items: center;
     height: 32px;
-    background: var(--color-secondary-bg);
+    background: var(--color-secondary-bg-for-transparent);
     border-radius: 8px;
     width: 200px;
   }
@@ -192,11 +215,22 @@ nav {
   }
 
   .active {
-    background: var(--color-primary-bg);
+    background: var(--color-primary-bg-for-transparent);
     input,
     .svg-icon {
       opacity: 1;
       color: var(--color-primary);
+    }
+  }
+}
+
+[data-theme="dark"] {
+  .search-box {
+    .active {
+      input,
+      .svg-icon {
+        color: var(--color-text);
+      }
     }
   }
 }
@@ -211,6 +245,7 @@ nav {
     height: 24px;
     width: 24px;
     color: var(--color-text);
+    -webkit-app-region: no-drag;
   }
 }
 </style>

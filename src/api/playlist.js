@@ -47,7 +47,10 @@ export function getPlaylistDetail(id, noCache = false) {
     method: "get",
     params,
   }).then((data) => {
-    data.playlist.tracks = mapTrackPlayableStatus(data.playlist.tracks);
+    data.playlist.tracks = mapTrackPlayableStatus(
+      data.playlist.tracks,
+      data.privileges || []
+    );
     return data;
   });
 }
@@ -99,6 +102,7 @@ export function playlistCatlist() {
     method: "get",
   });
 }
+
 /**
  * 所有榜单
  * 说明 : 调用此接口,可获取所有榜单 接口地址 : /toplist
@@ -109,6 +113,7 @@ export function toplists() {
     method: "get",
   });
 }
+
 
 /**
  * 所有榜单
@@ -131,9 +136,62 @@ export function toplistsDetail() {
  * @param {number} params.id
  */
 export function subscribePlaylist(params) {
+  params.timestamp = new Date().getTime();
   return request({
     url: "/playlist/subscribe",
-    method: "get",
+    method: "post",
+    params,
+  });
+}
+
+/**
+ * 删除歌单
+ * 说明 : 调用此接口 , 传入歌单id可删除歌单
+ * - id : 歌单id,可多个,用逗号隔开
+ *  * @param {number} id
+ */
+export function deletePlaylist(id) {
+  return request({
+    url: "/playlist/delete",
+    method: "post",
+    params: { id },
+  });
+}
+
+/**
+ * 新建歌单
+ * 说明 : 调用此接口 , 传入歌单名字可新建歌单
+ * - name : 歌单名
+ * - privacy : 是否设置为隐私歌单，默认否，传'10'则设置成隐私歌单
+ * - type : 歌单类型,默认'NORMAL',传 'VIDEO'则为视频歌单
+ * @param {Object} params
+ * @param {string} params.name
+ * @param {number} params.privacy
+ * @param {string} params.type
+ */
+export function createPlaylist(params) {
+  params.timestamp = new Date().getTime();
+  return request({
+    url: "/playlist/create",
+    method: "post",
+    params,
+  });
+}
+
+/**
+ * 对歌单添加或删除歌曲
+ * 说明 : 调用此接口 , 可以添加歌曲到歌单或者从歌单删除某首歌曲 ( 需要登录 )
+ * - op: 从歌单增加单曲为 add, 删除为 del
+ * - pid: 歌单 id tracks: 歌曲 id,可多个,用逗号隔开
+ * @param {Object} params
+ * @param {string} params.op
+ * @param {string} params.pid
+ */
+export function addOrRemoveTrackFromPlaylist(params) {
+  params.timestamp = new Date().getTime();
+  return request({
+    url: "/playlist/tracks",
+    method: "post",
     params,
   });
 }

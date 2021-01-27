@@ -6,7 +6,6 @@ import store from "./store";
 import i18n from "@/locale";
 import "@/assets/icons";
 import "@/utils/filters";
-import { initMediaSession } from "@/utils/mediaSession";
 import "./registerServiceWorker";
 import { dailyTask } from "@/utils/common";
 
@@ -24,8 +23,6 @@ Vue.use(
 );
 
 Vue.config.productionTip = false;
-
-initMediaSession();
 
 // if (process.env.VUE_APP_ENABLE_SENTRY === "true") {
 //   Sentry.init({

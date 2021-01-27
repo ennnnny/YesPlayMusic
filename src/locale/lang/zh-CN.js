@@ -1,5 +1,8 @@
 export default {
-  play: "播放",
+  common: {
+    play: "播放",
+    songs: "首歌",
+  },
   nav: {
     home: "首页",
     explore: "发现",
@@ -15,8 +18,12 @@ export default {
   },
   library: {
     sLibrary: "的音乐库",
-    likedSongs: "我喜欢的歌",
-    sLikedSongs: "喜欢的歌",
+    likedSongs: "我喜欢的音乐",
+    sLikedSongs: "喜欢的音乐",
+    playlists: "歌单",
+    albums: "专辑",
+    artists: "歌手",
+    mvs: "MV",
   },
   explore: {
     explore: "发现",
@@ -59,14 +66,15 @@ export default {
     login: "登录",
     loginWithEmail: "使用邮箱登录",
     loginWithPhone: "使用手机号登录",
-    notice: `
-      泡面音乐 承诺不会保存你的任何账号信息到云端。<br />
+    notice: `泡面音乐 承诺不会保存你的任何账号信息到云端。<br />
       你的密码会在本地进行 MD5 加密后再传输到网易云 API。<br />
       泡面音乐 并非网易云官方网站，输入账号信息前请慎重考虑。 你也可以前往
       <a href="https://github.com/qier222/YesPlayMusic"
         >YesPlayMusic 的 GitHub 源代码仓库</a
       >
       自行构建并使用自托管的网易云 API。`,
+    noticeElectron: `你的密码会在本地进行 MD5 加密后再传输到网易云 API。<br />
+      YesPlayMusic 不会传输你的账号数据到任何非网易云音乐官方的服务器。<br />`,
   },
   mv: {
     moreVideo: "更多视频",
@@ -79,7 +87,8 @@ export default {
     like: "喜欢",
     previous: "上一首",
     next: "下一首",
-    repeat: "单曲循环",
+    repeat: "循环播放",
+    repeatTrack: "单曲循环",
     shuffle: "随机播放",
     play: "播放",
     pause: "暂停",
@@ -98,9 +107,6 @@ export default {
     noResult: "暂无结果",
     searchFor: "搜索",
   },
-  common: {
-    songs: "首歌",
-  },
   settings: {
     settings: "设置",
     logout: "登出",
@@ -118,5 +124,21 @@ export default {
       light: "浅色",
       dark: "深色",
     },
+    automaticallyCacheSongs: "自动缓存歌曲",
+    clearSongsCache: "清除歌曲缓存",
+    cacheCount: "已缓存 {song} 首 ({size})",
+    showGitHubIcon: "显示 GitHub 图标",
+    showUnavailableSongInGreyStyle: "显示不可播放的歌曲为灰色",
+    showPlaylistsByAppleMusic: "首页显示来自 Apple Music 的歌单",
+  },
+  contextMenu: {
+    play: "播放",
+    playNext: "下一首播放",
+    saveToMyLikedSongs: "添加到我喜欢的音乐",
+    removeFromMyLikedSongs: "从喜欢的音乐中删除",
+  },
+  toast: {
+    savedToMyLikedSongs: "已添加到我喜欢的音乐",
+    removedFromMyLikedSongs: "已从喜欢的音乐中删除",
   },
 };

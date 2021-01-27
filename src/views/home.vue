@@ -24,7 +24,11 @@
     </div>
     <div class="index-row">
       <div class="title">{{ $t("home.recommendArtist") }}</div>
-      <CoverRow type="artist" :items="recommendArtists.items" />
+      <CoverRow
+        type="artist"
+        :columnNumber="6"
+        :items="recommendArtists.items"
+      />
     </div>
     <div class="index-row">
       <div class="title">
@@ -41,7 +45,7 @@
         }}</router-link>
       </div>
       <CoverRow
-        :type="'chart'"
+        type="playlist"
         :items="topList.items"
         :subText="'updateFrequency'"
         :imageSize="1024"
@@ -113,7 +117,7 @@ export default {
       });
       toplistOfArtists(2).then((data) => {
         let indexs = [];
-        while (indexs.length < 5) {
+        while (indexs.length < 6) {
           let tmp = ~~(Math.random() * 100);
           if (!indexs.includes(tmp)) indexs.push(tmp);
         }

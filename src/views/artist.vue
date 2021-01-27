@@ -22,7 +22,7 @@
         </div>
         <div class="buttons">
           <ButtonTwoTone @click.native="playPopularSongs()" :iconClass="`play`">
-            {{ $t("play") }}
+            {{ $t("common.play") }}
           </ButtonTwoTone>
           <ButtonTwoTone @click.native="followArtist" color="grey">
             <span v-if="artist.followed">{{ $t("artist.following") }}</span>
@@ -36,16 +36,11 @@
       <div class="release">
         <div class="container">
           <Cover
-            :url="latestRelease.picUrl | resizeImage"
-            :showPlayButton="true"
-            :showBlackShadow="true"
-            :type="`album`"
+            :imageUrl="latestRelease.picUrl | resizeImage"
+            type="album"
             :id="latestRelease.id"
-            :hoverEffect="true"
-            :size="128"
-            :playButtonSize="36"
-            :shadowMargin="8"
-            :radius="8"
+            :fixedSize="128"
+            :playButtonSize="30"
           />
           <div class="info">
             <div class="name">
@@ -106,6 +101,16 @@
         :showPlayButton="true"
       />
     </div>
+
+    <div class="similar-artists" v-if="similarArtists.length !== 0">
+      <div class="section-title">相似歌手</div>
+      <CoverRow
+        type="artist"
+        :columnNumber="6"
+        gap="36px 28px"
+        :items="similarArtists.slice(0, 12)"
+      />
+    </div>
   </div>
 </template>
 
@@ -116,8 +121,9 @@ import {
   getArtistAlbum,
   artistMv,
   followAArtist,
+  similarArtists,
 } from "@/api/artist";
-import { playAList } from "@/utils/play";
+import { isAccountLoggedIn } from "@/utils/auth";
 import NProgress from "nprogress";
 
 import ButtonTwoTone from "@/components/ButtonTwoTone.vue";
@@ -149,6 +155,7 @@ export default {
       showMorePopTracks: false,
       mvs: [],
       hasMoreMV: false,
+      similarArtists: [],
     };
   },
   computed: {
@@ -181,6 +188,9 @@ export default {
         this.mvs = data.mvs;
         this.hasMoreMV = data.hasMore;
       });
+      similarArtists(id).then((data) => {
+        this.similarArtists = data.artists;
+      });
     },
     goToAlbum(id) {
       this.$router.push({
@@ -190,9 +200,18 @@ export default {
     },
     playPopularSongs(trackID = "first") {
       let trackIDs = this.popularTracks.map((t) => t.id);
-      playAList(trackIDs, this.artist.id, "artist", trackID);
+      this.$store.state.player.replacePlaylist(
+        trackIDs,
+        this.artist.id,
+        "artist",
+        trackID
+      );
     },
     followArtist() {
+      if (!isAccountLoggedIn()) {
+        this.showToast("此操作需要登录网易云账号");
+        return;
+      }
       followAArtist({
         id: this.artist.id,
         t: this.artist.followed ? 0 : 1,
@@ -337,6 +356,12 @@ export default {
         opacity: 1;
       }
     }
+  }
+}
+
+.similar-artists {
+  .section-title {
+    margin-bottom: 24px;
   }
 }
 </style>

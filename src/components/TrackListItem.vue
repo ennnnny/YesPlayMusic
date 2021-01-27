@@ -3,12 +3,12 @@
     class="track"
     :class="trackClass"
     :style="trackStyle"
-    :title="track.reason"
+    :title="showUnavailableSongInGreyStyle ? track.reason : ''"
     @mouseover="hover = true"
     @mouseleave="hover = false"
   >
     <img
-      :src="imgUrl | resizeImage(224)"
+      :src="imgUrl"
       v-if="!isAlbum"
       @click="goToAlbum"
       :class="{ hover: focus }"
@@ -62,7 +62,7 @@
       <div></div>
     </div>
     <div class="actions" v-if="!isTracklist">
-      <button v-if="accountLogin" @click="likeThisSong">
+      <button @click="likeThisSong">
         <svg-icon
           icon-class="heart"
           :style="{
@@ -80,25 +80,31 @@
 </template>
 
 <script>
-import { isAccountLoggedIn } from "@/utils/auth";
-
 import ArtistsInLine from "@/components/ArtistsInLine.vue";
 import ExplicitSymbol from "@/components/ExplicitSymbol.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "TrackListItem",
   components: { ArtistsInLine, ExplicitSymbol },
   props: {
     track: Object,
+    highlightPlayingTrack: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return { hover: false, trackStyle: {} };
   },
   computed: {
+    ...mapState(["settings"]),
     imgUrl() {
-      if (this.track.al !== undefined) return this.track.al.picUrl;
-      if (this.track.album !== undefined) return this.track.album.picUrl;
-      return "";
+      let image =
+        this.track?.al?.picUrl ??
+        this.track?.album?.picUrl ??
+        "https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg";
+      return image + "?param=224y224";
     },
     artists() {
       if (this.track.ar !== undefined) return this.track.ar;
@@ -125,13 +131,12 @@ export default {
     },
     trackClass() {
       let trackClass = [this.type];
-      if (!this.track.playable) trackClass.push("disable");
-      if (this.isPlaying) trackClass.push("playing");
+      if (!this.track.playable && this.settings.showUnavailableSongInGreyStyle)
+        trackClass.push("disable");
+      if (this.isPlaying && this.highlightPlayingTrack)
+        trackClass.push("playing");
       if (this.focus) trackClass.push("focus");
       return trackClass;
-    },
-    accountLogin() {
-      return isAccountLoggedIn();
     },
     isMenuOpened() {
       return this.$parent.rightClickedTrack.id === this.track.id ? true : false;
@@ -141,6 +146,9 @@ export default {
         (this.hover && this.$parent.rightClickedTrack.id === 0) ||
         this.isMenuOpened
       );
+    },
+    showUnavailableSongInGreyStyle() {
+      return this.$store.state.settings.showUnavailableSongInGreyStyle;
     },
   },
   methods: {
@@ -153,10 +161,6 @@ export default {
     likeThisSong() {
       this.$parent.likeASong(this.track.id);
     },
-  },
-  created() {
-    if (this.$parent.itemWidth !== -1)
-      this.trackStyle = { width: this.$parent.itemWidth + "px" };
   },
 };
 </script>
@@ -175,8 +179,11 @@ button {
     width: 16px;
     color: var(--color-primary);
   }
+  &:hover {
+    transform: scale(1.12);
+  }
   &:active {
-    transform: scale(0.92);
+    transform: scale(0.96);
   }
 }
 
@@ -218,8 +225,8 @@ button {
 
   img {
     border-radius: 8px;
-    height: 56px;
-    width: 56px;
+    height: 46px;
+    width: 46px;
     margin-right: 20px;
     border: 1px solid rgba(0, 0, 0, 0.04);
     cursor: pointer;
@@ -322,7 +329,6 @@ button {
 }
 
 .track.tracklist {
-  width: 256px;
   img {
     height: 36px;
     width: 36px;
