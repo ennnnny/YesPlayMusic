@@ -164,12 +164,13 @@ export default class {
     });
   }
   _getAudioSourceFromNetease(track) {
-    if (isAccountLoggedIn()) {
+    if (isAccountLoggedIn() || track.playType === 2) {
       return getMP3(track.id).then((result) => {
         if (!result.data[0]) return null;
         if (!result.data[0].url) return null;
-        if (result.data[0].freeTrialInfo !== null) return null; // 跳过只能试听的歌曲
-        const source = result.data[0].url.replace(/^http:/, "https:");
+        // if (result.data[0].freeTrialInfo !== null) return null; // 跳过只能试听的歌曲
+        // const source = result.data[0].url.replace(/^http:/, "https:");
+        const source = result.data[0].url;
         if (store.state.settings.automaticallyCacheSongs) {
           cacheTrack(track.id, source);
         }
@@ -207,7 +208,7 @@ export default class {
       let track = data.songs[0];
       this._currentTrack = track;
       this._updateMediaSessionMetaData(track);
-      document.title = `${track.name} · ${track.ar[0].name} - YesPlayMusic`;
+      document.title = `${track.name} · ${track.ar[0].name} - 泡面音乐`;
       this._getAudioSource(track).then((source) => {
         if (source) {
           this._playAudioSource(source, autoplay);
