@@ -2,22 +2,30 @@
   <div class="album" v-show="show">
     <div class="playlist-info">
       <Cover
-        :url="album.picUrl | resizeImage(1024)"
+        :imageUrl="album.picUrl | resizeImage(1024)"
         :showPlayButton="true"
         :alwaysShowShadow="true"
-        :clickToPlay="true"
-        :size="288"
-        :type="'album'"
+        :clickCoverToPlay="true"
+        :fixedSize="288"
+        type="album"
         :id="album.id"
+        :coverHover="false"
+        :playButtonSize="18"
+        @click.right.native="openMenu"
       />
       <div class="info">
-        <div class="title"> {{ title }}</div>
-        <div class="subtitle" v-if="subtitle !== ''">{{ subtitle }}</div>
+        <div class="title" @click.right="openMenu"> {{ title }}</div>
+        <div class="subtitle" v-if="subtitle !== ''" @click.right="openMenu">{{
+          subtitle
+        }}</div>
         <div class="artist">
-          <span>{{ album.type | formatAlbumType(album) }} by </span
-          ><router-link :to="`/artist/${album.artist.id}`">{{
-            album.artist.name
-          }}</router-link>
+          <span v-if="album.artist.id !== 104700">
+            <span>{{ album.type | formatAlbumType(album) }} by </span
+            ><router-link :to="`/artist/${album.artist.id}`">{{
+              album.artist.name
+            }}</router-link></span
+          >
+          <span v-else>Compilation by Various Artists</span>
         </div>
         <div class="date-and-count">
           <span class="explicit-symbol" v-if="album.mark === 1056768"
@@ -36,17 +44,28 @@
         <div class="buttons" style="margin-top: 32px">
           <ButtonTwoTone
             @click.native="playAlbumByID(album.id)"
-            :iconClass="`play`"
+            iconClass="play"
           >
-            {{ $t("play") }}
+            {{ $t("common.play") }}
           </ButtonTwoTone>
           <ButtonTwoTone
-            v-if="accountLogin"
-            shape="round"
             :iconClass="dynamicDetail.isSub ? 'heart-solid' : 'heart'"
             :iconButton="true"
             :horizontalPadding="0"
+            :color="dynamicDetail.isSub ? 'blue' : 'grey'"
+            :textColor="dynamicDetail.isSub ? '#335eea' : ''"
+            :backgroundColor="
+              dynamicDetail.isSub ? 'var(--color-secondary-bg)' : ''
+            "
             @click.native="likeAlbum"
+          >
+          </ButtonTwoTone>
+          <ButtonTwoTone
+            iconClass="more"
+            :iconButton="true"
+            :horizontalPadding="0"
+            color="grey"
+            @click.native="openMenu"
           >
           </ButtonTwoTone>
         </div>
@@ -80,24 +99,24 @@
           type="album"
           :items="filteredMoreAlbums"
           subText="albumType+releaseYear"
-          :showPlayButton="true"
         />
       </div>
     </div>
-    <transition name="fade">
-      <div
-        class="shade"
-        @click="showFullDescription = false"
-        v-show="showFullDescription"
-      >
-        <div class="description-full" @click.stop>
-          <span>{{ album.description }}</span>
-          <span class="close" @click="showFullDescription = false">
-            {{ $t("modal.close") }}
-          </span>
-        </div>
-      </div>
-    </transition>
+    <Modal
+      :show="showFullDescription"
+      :close="() => (showFullDescription = false)"
+      :showFooter="false"
+      :clickOutsideHide="true"
+      title="专辑介绍"
+      >{{ album.description }}</Modal
+    >
+    <ContextMenu ref="albumMenu">
+      <div class="item">{{ $t("contextMenu.playNext") }}</div>
+      <div class="item" @click="likeAlbum(true)">{{
+        dynamicDetail.isSub ? "从音乐库删除" : "保存到音乐库"
+      }}</div>
+      <div class="item">添加到歌单</div>
+    </ContextMenu>
   </div>
 </template>
 
@@ -105,7 +124,6 @@
 import { mapMutations, mapActions, mapState } from "vuex";
 import { getArtistAlbum } from "@/api/artist";
 import { getTrackDetail } from "@/api/track";
-import { playAlbumByID } from "@/utils/play";
 import { getAlbum, albumDynamicDetail, likeAAlbum } from "@/api/album";
 import { splitSoundtrackAlbumTitle, splitAlbumTitle } from "@/utils/common";
 import NProgress from "nprogress";
@@ -113,9 +131,11 @@ import { isAccountLoggedIn } from "@/utils/auth";
 
 import ExplicitSymbol from "@/components/ExplicitSymbol.vue";
 import ButtonTwoTone from "@/components/ButtonTwoTone.vue";
+import ContextMenu from "@/components/ContextMenu.vue";
 import TrackList from "@/components/TrackList.vue";
 import CoverRow from "@/components/CoverRow.vue";
 import Cover from "@/components/Cover.vue";
+import Modal from "@/components/Modal.vue";
 
 export default {
   name: "Album",
@@ -125,6 +145,8 @@ export default {
     TrackList,
     ExplicitSymbol,
     CoverRow,
+    Modal,
+    ContextMenu,
   },
   data() {
     return {
@@ -154,9 +176,6 @@ export default {
       this.tracks.map((t) => (time = time + t.dt));
       return time;
     },
-    accountLogin() {
-      return isAccountLoggedIn();
-    },
     filteredMoreAlbums() {
       let moreAlbums = this.moreAlbums.filter((a) => a.id !== this.album.id);
       let realAlbums = moreAlbums.filter((a) => a.type === "专辑");
@@ -177,20 +196,26 @@ export default {
   },
   methods: {
     ...mapMutations(["appendTrackToPlayerList"]),
-    ...mapActions(["playFirstTrackOnList", "playTrackOnListByID"]),
+    ...mapActions(["playFirstTrackOnList", "playTrackOnListByID", "showToast"]),
     playAlbumByID(id, trackID = "first") {
-      if (this.tracks.find((t) => t.playable !== false) === undefined) {
+      this.$store.state.player.playAlbumByID(id, trackID);
+    },
+    likeAlbum(toast = false) {
+      if (!isAccountLoggedIn()) {
+        this.showToast("此操作需要登录网易云账号");
         return;
       }
-      playAlbumByID(id, trackID);
-    },
-    likeAlbum() {
       likeAAlbum({
         id: this.album.id,
         t: this.dynamicDetail.isSub ? 0 : 1,
       }).then((data) => {
-        if (data.code === 200)
+        if (data.code === 200) {
           this.dynamicDetail.isSub = !this.dynamicDetail.isSub;
+          if (toast === true)
+            this.showToast(
+              this.dynamicDetail.isSub ? "已保存到音乐库" : "已从音乐库删除"
+            );
+        }
       });
     },
     formatTitle() {
@@ -230,6 +255,9 @@ export default {
       albumDynamicDetail(id).then((data) => {
         this.dynamicDetail = data;
       });
+    },
+    openMenu(e) {
+      this.$refs.albumMenu.openMenu(e);
     },
   },
   beforeRouteUpdate(to, from, next) {
@@ -298,49 +326,6 @@ export default {
   }
 }
 
-.shade {
-  background: rgba(255, 255, 255, 0.38);
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  .description-full {
-    background: rgba(255, 255, 255, 0.78);
-    box-shadow: 0 12px 16px -8px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    backdrop-filter: blur(12px);
-    padding: 32px;
-    border-radius: 12px;
-    width: 50vw;
-    margin: auto 0;
-    font-size: 14px;
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-
-    .close {
-      display: flex;
-      justify-content: flex-end;
-      font-size: 16px;
-      margin-top: 20px;
-      color: #335eea;
-      cursor: pointer;
-    }
-  }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
-
 .explicit-symbol {
   opacity: 0.28;
   color: var(--color-text);
@@ -373,7 +358,7 @@ export default {
     font-weight: 600;
     opacity: 0.88;
     color: var(--color-text);
-    margin-bottom: 8px;
+    margin-bottom: 20px;
   }
 }
 </style>

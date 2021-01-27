@@ -3,47 +3,22 @@ import Vuex from "vuex";
 import state from "./state";
 import mutations from "./mutations";
 import actions from "./actions";
-import initLocalStorage from "./initLocalStorage";
-import { Howl, Howler } from "howler";
 import { changeAppearance } from "@/utils/common";
-import updateApp from "@/utils/updateApp";
-import pack from "../../package.json";
-
-if (localStorage.getItem("appVersion") === null) {
-  localStorage.setItem("player", JSON.stringify(initLocalStorage.player));
-  localStorage.setItem("settings", JSON.stringify(initLocalStorage.settings));
-  localStorage.setItem("data", JSON.stringify(initLocalStorage.data));
-  localStorage.setItem("appVersion", pack.version);
-  window.location.reload();
-}
-
-updateApp();
-
-const saveToLocalStorage = (store) => {
-  store.subscribe((mutation, state) => {
-    // console.log(mutation);
-    localStorage.setItem("player", JSON.stringify(state.player));
-    localStorage.setItem("settings", JSON.stringify(state.settings));
-    localStorage.setItem("data", JSON.stringify(state.data));
-  });
-};
+import Player from "@/utils/Player";
+// vuex 自定义插件
+import saveToLocalStorage from "./plugins/localStorage";
 
 Vue.use(Vuex);
-const store = new Vuex.Store({
-  state: state,
+
+let plugins = [saveToLocalStorage];
+const options = {
+  state,
   mutations,
   actions,
-  plugins: [saveToLocalStorage],
-});
+  plugins,
+};
 
-store.state.howler = new Howl({
-  src: [
-    `https://music.163.com/song/media/outer/url?id=${store.state.player.currentTrack.id}`,
-  ],
-  html5: true,
-  format: ["mp3"],
-});
-Howler.volume(store.state.player.volume);
+const store = new Vuex.Store(options);
 
 if ([undefined, null].includes(store.state.settings.lang)) {
   let lang = "en";
@@ -53,6 +28,7 @@ if ([undefined, null].includes(store.state.settings.lang)) {
 }
 
 changeAppearance(store.state.settings.appearance);
+
 window
   .matchMedia("(prefers-color-scheme: dark)")
   .addEventListener("change", () => {
@@ -60,5 +36,18 @@ window
       changeAppearance(store.state.settings.appearance);
     }
   });
+
+let player = new Player();
+player = new Proxy(player, {
+  set(target, prop, val) {
+    // console.log({ prop, val });
+    target[prop] = val;
+    if (prop === "_howler") return true;
+    target.saveSelfToLocalStorage();
+    target.sendSelfToIpcMain();
+    return true;
+  },
+});
+store.state.player = player;
 
 export default store;

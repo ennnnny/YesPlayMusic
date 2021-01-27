@@ -2,7 +2,7 @@
 node_modules
 /dist
 dist_electron
-
+Icon?
 
 # local env files
 .env
@@ -25,4 +25,9 @@ pnpm-debug.log*
 *.sw?
 
 .vercel
+/netease_api
+
+#Electron-builder output
+/dist_electron
+NeteaseCloudMusicApi-master
 NeteaseCloudMusicApi-master.zip

@@ -33,43 +33,52 @@
         <TrackList
           :tracks="likedSongs"
           :type="'tracklist'"
-          :itemWidth="220"
           :id="likedSongsPlaylist.id"
           dbclickTrackFunc="playPlaylistByID"
+          :columnNumber="3"
         />
       </div>
     </div>
 
     <div class="section-two" id="liked">
-      <div class="tabs">
-        <div
-          class="tab"
-          :class="{ active: currentTab === 'playlists' }"
-          @click="updateCurrentTab('playlists')"
-        >
-          Playlists
+      <div class="tabs-row">
+        <div class="tabs">
+          <div
+            class="tab"
+            :class="{ active: currentTab === 'playlists' }"
+            @click="updateCurrentTab('playlists')"
+          >
+            {{ $t("library.playlists") }}
+          </div>
+          <div
+            class="tab"
+            :class="{ active: currentTab === 'albums' }"
+            @click="updateCurrentTab('albums')"
+          >
+            {{ $t("library.albums") }}
+          </div>
+          <div
+            class="tab"
+            :class="{ active: currentTab === 'artists' }"
+            @click="updateCurrentTab('artists')"
+          >
+            {{ $t("library.artists") }}
+          </div>
+          <div
+            class="tab"
+            :class="{ active: currentTab === 'mvs' }"
+            @click="updateCurrentTab('mvs')"
+          >
+            {{ $t("library.mvs") }}
+          </div>
         </div>
-        <div
-          class="tab"
-          :class="{ active: currentTab === 'albums' }"
-          @click="updateCurrentTab('albums')"
+        <button
+          class="add-playlist"
+          icon="plus"
+          v-show="currentTab === 'playlists'"
+          @click="openAddPlaylistModal"
+          ><svg-icon icon-class="plus" />新建歌单</button
         >
-          Albums
-        </div>
-        <div
-          class="tab"
-          :class="{ active: currentTab === 'artists' }"
-          @click="updateCurrentTab('artists')"
-        >
-          Artists
-        </div>
-        <div
-          class="tab"
-          :class="{ active: currentTab === 'mvs' }"
-          @click="updateCurrentTab('mvs')"
-        >
-          MVs
-        </div>
       </div>
 
       <div v-show="currentTab === 'playlists'">
@@ -104,7 +113,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import { getTrackDetail, getLyric } from "@/api/track";
 import {
   userDetail,
@@ -115,13 +124,13 @@ import {
 } from "@/api/user";
 import { randomNum, dailyTask } from "@/utils/common";
 import { getPlaylistDetail } from "@/api/playlist";
-import { playPlaylistByID } from "@/utils/play";
+import { isAccountLoggedIn } from "@/utils/auth";
 import NProgress from "nprogress";
 
 import TrackList from "@/components/TrackList.vue";
 import CoverRow from "@/components/CoverRow.vue";
-import MvRow from "@/components/MvRow.vue";
 import SvgIcon from "@/components/SvgIcon.vue";
+import MvRow from "@/components/MvRow.vue";
 
 export default {
   name: "Library",
@@ -180,10 +189,20 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["showToast"]),
+    ...mapMutations(["updateModal"]),
     playLikedSongs() {
-      playPlaylistByID(this.playlists[0].id, "first", true);
+      this.$store.state.player.playPlaylistByID(
+        this.playlists[0].id,
+        "first",
+        true
+      );
     },
     updateCurrentTab(tab) {
+      if (!isAccountLoggedIn() && tab !== "playlists") {
+        this.showToast("此操作需要登录网易云账号");
+        return;
+      }
       this.currentTab = tab;
       document
         .getElementById("liked")
@@ -229,7 +248,7 @@ export default {
     getLikedSongs(getLyric = true) {
       getPlaylistDetail(this.data.likedSongPlaylistID, true).then((data) => {
         this.likedSongsPlaylist = data.playlist;
-        let TrackIDs = data.playlist.trackIds.slice(0, 20).map((t) => t.id);
+        let TrackIDs = data.playlist.trackIds.slice(0, 12).map((t) => t.id);
         this.likedSongIDs = TrackIDs;
         getTrackDetail(this.likedSongIDs.join(",")).then((data) => {
           this.likedSongs = data.songs;
@@ -267,6 +286,17 @@ export default {
         NProgress.done();
       });
     },
+    openAddPlaylistModal() {
+      if (!isAccountLoggedIn()) {
+        this.showToast("此操作需要登录网易云账号");
+        return;
+      }
+      this.updateModal({
+        modalName: "newPlaylistModal",
+        key: "show",
+        value: true,
+      });
+    },
   },
   watch: {
     likedSongsInState() {
@@ -296,7 +326,6 @@ h1 {
     flex: 7;
     margin-top: 8px;
     margin-left: 36px;
-    height: 216px;
     overflow: hidden;
   }
 }
@@ -305,8 +334,6 @@ h1 {
   flex: 3;
   margin-top: 8px;
   cursor: pointer;
-  height: 216px;
-  width: 300px;
   border-radius: 16px;
   padding: 18px 24px;
   display: flex;
@@ -374,11 +401,14 @@ h1 {
 }
 
 .section-two {
-  // margin-top: 42px;
-  // padding-top: 14px;
-  // border-top: 1px solid rgba(128, 128, 128, 0.18);
   margin-top: 54px;
   min-height: calc(100vh - 182px);
+}
+
+.tabs-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
 }
 
 .tabs {
@@ -386,11 +416,10 @@ h1 {
   flex-wrap: wrap;
   font-size: 18px;
   color: var(--color-text);
-  margin-bottom: 6px;
   .tab {
     font-weight: 600;
     padding: 8px 14px;
-    margin: 10px 14px 6px 0;
+    margin-right: 14px;
     border-radius: 8px;
     cursor: pointer;
     user-select: none;
@@ -404,6 +433,31 @@ h1 {
   .tab.active {
     opacity: 0.88;
     background-color: var(--color-secondary-bg);
+  }
+}
+
+button.add-playlist {
+  color: var(--color-text);
+  border-radius: 8px;
+  padding: 0 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
+  opacity: 0.68;
+  font-weight: 500;
+  .svg-icon {
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+  }
+  &:hover {
+    opacity: 1;
+    background: var(--color-secondary-bg);
+  }
+  &:active {
+    opacity: 1;
+    transform: scale(0.92);
   }
 }
 </style>

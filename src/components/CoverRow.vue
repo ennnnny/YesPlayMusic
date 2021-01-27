@@ -1,24 +1,12 @@
 <template>
-  <div class="cover-row">
+  <div class="cover-row" :style="rowStyles">
     <div
       class="item"
-      :class="{ artist: type === 'artist' }"
       v-for="item in items"
       :key="item.id"
-      :style="{ marginBottom: subText === 'none' ? '32px' : '24px' }"
+      :class="{ artist: type === 'artist' }"
     >
-      <Cover
-        class="cover"
-        :id="item.id"
-        :type="type === 'chart' ? 'playlist' : type"
-        :url="getUrl(item) | resizeImage(imageSize)"
-        :hoverEffect="true"
-        :showBlackShadow="true"
-        :showPlayButton="showPlayButton"
-        :radius="type === 'artist' ? 100 : 12"
-        :size="type === 'artist' ? 192 : 208"
-      />
-
+      <Cover :imageUrl="getImageUrl(item)" :type="type" :id="item.id" />
       <div class="text">
         <div class="info" v-if="showPlayCount">
           <span class="play-count"
@@ -27,22 +15,14 @@
             }}
           </span>
         </div>
-        <div class="name">
-          <span
-            class="explicit-symbol"
-            v-if="type === 'album' && item.mark === 1056768"
+        <div class="title">
+          <span class="explicit-symbol" v-if="isExplicit(item)"
             ><ExplicitSymbol
           /></span>
-          <span
-            class="lock-icon"
-            v-if="type === 'playlist' && item.privacy === 10"
-          >
+          <span class="lock-icon" v-if="isPrivacy(item)">
             <svg-icon icon-class="lock"
           /></span>
-          <router-link
-            :to="`/${type === 'chart' ? 'playlist' : type}/${item.id}`"
-            >{{ item.name }}</router-link
-          >
+          <router-link :to="getTitleLink(item)">{{ item.name }}</router-link>
         </div>
         <div class="info" v-if="type !== 'artist' && subText !== 'none'">
           <span v-html="getSubText(item)"></span>
@@ -53,8 +33,8 @@
 </template>
 
 <script>
-import ExplicitSymbol from "@/components/ExplicitSymbol.vue";
 import Cover from "@/components/Cover.vue";
+import ExplicitSymbol from "@/components/ExplicitSymbol.vue";
 
 export default {
   name: "CoverRow",
@@ -63,31 +43,22 @@ export default {
     ExplicitSymbol,
   },
   props: {
-    items: Array,
-    type: String,
-    subText: {
-      type: String,
-      default: "none",
-    },
-    imageSize: {
-      type: Number,
-      default: 512,
-    },
-    showPlayButton: {
-      type: Boolean,
-      default: false,
-    },
-    showPlayCount: {
-      type: Boolean,
-      default: false,
+    items: { type: Array, required: true },
+    type: { type: String, required: true },
+    subText: { type: String, default: "null" },
+    showPlayCount: { type: Boolean, default: false },
+    columnNumber: { type: Number, default: 5 },
+    gap: { type: String, default: "44px 24px" },
+  },
+  computed: {
+    rowStyles() {
+      return {
+        "grid-template-columns": `repeat(${this.columnNumber}, 1fr)`,
+        gap: this.gap,
+      };
     },
   },
   methods: {
-    getUrl(item) {
-      if (item.picUrl !== undefined) return item.picUrl;
-      if (item.coverImgUrl !== undefined) return item.coverImgUrl;
-      if (item.img1v1Url !== undefined) return item.img1v1Url;
-    },
     getSubText(item) {
       if (this.subText === "copywriter") return item.copywriter;
       if (this.subText === "description") return item.description;
@@ -114,34 +85,44 @@ export default {
       }
       if (this.subText === "appleMusic") return "by Apple Music";
     },
+    isPrivacy(item) {
+      return this.type === "playlist" && item.privacy === 10;
+    },
+    isExplicit(item) {
+      return this.type === "album" && item.mark === 1056768;
+    },
+    getTitleLink(item) {
+      return `/${this.type}/${item.id}`;
+    },
+    getImageUrl(item) {
+      if (item.img1v1Url) {
+        let img1v1ID = item.img1v1Url.split("/");
+        img1v1ID = img1v1ID[img1v1ID.length - 1];
+        if (img1v1ID === "5639395138885805.jpg") {
+          // 没有头像的歌手，网易云返回的img1v1Url并不是正方形的 😅😅😅
+          return "https://p2.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg?param=512x512";
+        }
+      }
+      let img = item.img1v1Url || item.picUrl || item.coverImgUrl;
+      return `${img}?param=512x512`;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .cover-row {
-  display: flex;
-  flex-wrap: wrap;
-  margin: {
-    right: -12px;
-    left: -12px;
-  }
-  .index-playlist {
-    margin: 12px 12px 24px 12px;
-  }
+  display: grid;
 }
 
 .item {
-  margin: 12px 12px 24px 12px;
   color: var(--color-text);
   .text {
-    width: 208px;
     margin-top: 8px;
-    .name {
+    .title {
       font-size: 16px;
       font-weight: 600;
       line-height: 20px;
-
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
@@ -155,7 +136,6 @@ export default {
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow: hidden;
-      // margin-top: 4px;
     }
   }
 }
@@ -163,13 +143,18 @@ export default {
 .item.artist {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   text-align: center;
   .cover {
     display: flex;
   }
-  .name {
+  .title {
     margin-top: 4px;
+  }
+}
+
+@media (max-width: 834px) {
+  .item .text .title {
+    font-size: 14px;
   }
 }
 

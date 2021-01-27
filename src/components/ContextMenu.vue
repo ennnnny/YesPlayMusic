@@ -37,7 +37,9 @@ export default {
 
     closeMenu() {
       this.showMenu = false;
-      this.$parent.closeMenu();
+      if (this.$parent.closeMenu !== undefined) {
+        this.$parent.closeMenu();
+      }
     },
 
     openMenu(e) {
@@ -81,9 +83,18 @@ export default {
 
 [data-theme="dark"] {
   .menu {
-    background: rgba(46, 46, 46, 0.68);
+    background: rgba(36, 36, 36, 0.78);
     backdrop-filter: blur(16px) contrast(120%);
     border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .menu .item:hover {
+    color: var(--color-text);
+  }
+}
+
+@supports (-moz-appearance: none) {
+  .menu {
+    background-color: var(--color-body-bg) !important;
   }
 }
 
@@ -95,8 +106,8 @@ export default {
   cursor: default;
   color: var(--color-text);
   &:hover {
-    background: var(--color-primary-bg);
     color: var(--color-primary);
+    background: var(--color-primary-bg-for-transparent);
   }
 }
 

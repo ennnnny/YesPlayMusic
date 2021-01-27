@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Navbar />
-    <main>
+    <Navbar ref="navbar" />
+    <main v-show="!this.$store.state.showLyrics">
       <keep-alive>
         <router-view v-if="$route.meta.keepAlive"></router-view>
       </keep-alive>
@@ -9,39 +9,70 @@
     </main>
     <transition name="slide-up">
       <Player
-        v-if="this.$store.state.player.enable"
+        v-if="this.$store.state.player.enabled"
         ref="player"
-        v-show="
-          ['mv', 'loginUsername', 'login', 'loginAccount'].includes(
-            this.$route.name
-          ) === false
-        "
+        v-show="showPlayer"
     /></transition>
-    <GlobalEvents :filter="globalEventFilter" @keydown.space="play" />
+    <Toast />
+    <ModalAddTrackToPlaylist v-if="isAccountLoggedIn" />
+    <ModalNewPlaylist v-if="isAccountLoggedIn" />
+    <transition name="slide-up">
+      <Lyrics v-show="this.$store.state.showLyrics" />
+    </transition>
   </div>
 </template>
 
 <script>
+import ModalAddTrackToPlaylist from "./components/ModalAddTrackToPlaylist.vue";
+import ModalNewPlaylist from "./components/ModalNewPlaylist.vue";
 import Navbar from "./components/Navbar.vue";
 import Player from "./components/Player.vue";
-import GlobalEvents from "vue-global-events";
+import Toast from "./components/Toast.vue";
+import { ipcRenderer } from "./electron/ipcRenderer";
+import { isAccountLoggedIn } from "@/utils/auth";
+import Lyrics from "./views/lyrics.vue";
 
 export default {
   name: "App",
   components: {
     Navbar,
     Player,
-    GlobalEvents,
+    Toast,
+    ModalAddTrackToPlaylist,
+    ModalNewPlaylist,
+    Lyrics,
+  },
+  data() {
+    return {
+      isElectron: process.env.IS_ELECTRON, // true || undefined
+    };
+  },
+  computed: {
+    isAccountLoggedIn() {
+      return isAccountLoggedIn();
+    },
+    showPlayer() {
+      return (
+        ["mv", "loginUsername", "login", "loginAccount"].includes(
+          this.$route.name
+        ) === false
+      );
+    },
+  },
+  created() {
+    if (this.isElectron) {
+      ipcRenderer(this);
+    }
+    window.addEventListener("keydown", this.handleKeydown);
   },
   methods: {
-    play(e) {
-      e.preventDefault();
-      this.$refs.player.play();
-    },
-    globalEventFilter(event) {
-      if (event.target.tagName === "INPUT") return false;
-      if (this.$route.name === "mv") return false;
-      return true;
+    handleKeydown(e) {
+      if (e.code === "Space") {
+        if (e.target.tagName === "INPUT") return false;
+        if (this.$route.name === "mv") return false;
+        e.preventDefault();
+        this.$refs.player.play();
+      }
     },
   },
 };
@@ -58,6 +89,8 @@ export default {
   --color-secondary: #7a7a7b;
   --color-secondary-bg: #f5f5f7;
   --color-navbar-bg: rgba(255, 255, 255, 0.86);
+  --color-primary-bg-for-transparent: rgba(189, 207, 255, 0.28);
+  --color-secondary-bg-for-transparent: rgba(209, 209, 214, 0.28);
 }
 
 [data-theme="dark"] {
@@ -67,16 +100,20 @@ export default {
   --color-primary-bg: #bbcdff;
   --color-secondary: #7a7a7b;
   --color-secondary-bg: #323232;
-  --color-navbar-bg: #335eea;
   --color-navbar-bg: rgba(34, 34, 34, 0.86);
+  --color-primary-bg-for-transparent: rgba(255, 255, 255, 0.12);
+  --color-secondary-bg-for-transparent: rgba(255, 255, 255, 0.08);
 }
 
 #app {
+  width: 100%;
+  transition: all 0.4s;
+}
+#app,
+input {
   font-family: "Barlow", -apple-system, BlinkMacSystemFont, Helvetica Neue,
     PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC,
     WenQuanYi Micro Hei, sans-serif;
-  width: 100%;
-  transition: all 0.4s;
 }
 body {
   background-color: var(--color-body-bg);
@@ -84,15 +121,21 @@ body {
 
 html {
   overflow-y: overlay;
-  min-width: 1000px;
+  min-width: 768px;
 }
 
 main {
-  margin-top: 96px;
+  margin-top: 84px;
   margin-bottom: 96px;
   padding: {
     right: 10vw;
     left: 10vw;
+  }
+}
+
+@media (max-width: 1336px) {
+  main {
+    padding: 0 5vw;
   }
 }
 
@@ -129,6 +172,7 @@ a {
 ::-webkit-scrollbar-track {
   background: transparent;
   border-left: 1px solid rgba(128, 128, 128, 0.18);
+  background: var(--color-body-bg);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -143,5 +187,13 @@ a {
 }
 .slide-up-enter, .slide-up-leave-to /* .fade-leave-active below version 2.1.8 */ {
   transform: translateY(100%);
+}
+
+[data-electron="yes"] {
+  button,
+  .navigation-links a,
+  .playlist-info .description {
+    cursor: default !important;
+  }
 }
 </style>
