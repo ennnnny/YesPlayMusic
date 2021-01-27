@@ -103,7 +103,9 @@ export default class {
   _init() {
     Howler.autoUnlock = false;
     this._loadSelfFromLocalStorage();
-    this._replaceCurrentTrack(this._currentTrack.id, false); // update audio source and init howler
+    if (this._currentTrack.id) {
+      this._replaceCurrentTrack(this._currentTrack.id, false); // update audio source and init howler
+    }
     this._initMediaSession();
     Howler.volume(this.volume);
   }

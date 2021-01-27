@@ -241,9 +241,11 @@ export default {
 
         // to get explicit mark
         let trackIDs = this.tracks.map((t) => t.id);
-        getTrackDetail(trackIDs.join(",")).then((data) => {
-          this.tracks = data.songs;
-        });
+        if (trackIDs.length > 0) {
+          getTrackDetail(trackIDs.join(",")).then((data) => {
+            this.tracks = data.songs;
+          });
+        }
 
         // get more album by this artist
         getArtistAlbum({ id: this.album.artist.id, limit: 100 }).then(

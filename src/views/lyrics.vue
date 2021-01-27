@@ -173,7 +173,11 @@ export default {
       return this.player.currentTrack;
     },
     imageUrl() {
-      return this.player.currentTrack.al.picUrl + "?param=1024x1024";
+      if (this.player.currentTrack.al) {
+        return this.player.currentTrack.al.picUrl + "?param=1024x1024";
+      } else {
+        return '';
+      }
     },
     progress: {
       get() {
@@ -244,18 +248,24 @@ export default {
   methods: {
     ...mapMutations(["toggleLyrics"]),
     getLyric() {
-      return getLyric(this.currentTrack.id).then((data) => {
-        if (!data?.lrc?.lyric) {
-          this.lyric = [];
-          this.tlyric = [];
-          return false;
-        } else {
-          let { lyric, tlyric } = lyricParser(data);
-          this.lyric = lyric;
-          this.tlyric = tlyric;
-          return true;
-        }
-      });
+      if (this.currentTrack.id) {
+        return getLyric(this.currentTrack.id).then((data) => {
+          if (!data?.lrc?.lyric) {
+            this.lyric = [];
+            this.tlyric = [];
+            return false;
+          } else {
+            let {lyric, tlyric} = lyricParser(data);
+            this.lyric = lyric;
+            this.tlyric = tlyric;
+            return true;
+          }
+        });
+      } else {
+        this.lyric = [];
+        this.tlyric = [];
+        return false;
+      }
     },
     formatTrackTime(value) {
       return formatTrackTime(value);

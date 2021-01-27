@@ -250,11 +250,13 @@ export default {
         this.likedSongsPlaylist = data.playlist;
         let TrackIDs = data.playlist.trackIds.slice(0, 12).map((t) => t.id);
         this.likedSongIDs = TrackIDs;
-        getTrackDetail(this.likedSongIDs.join(",")).then((data) => {
-          this.likedSongs = data.songs;
-          NProgress.done();
-          this.show = true;
-        });
+        if (TrackIDs.length > 0) {
+          getTrackDetail(this.likedSongIDs.join(",")).then((data) => {
+            this.likedSongs = data.songs;
+            NProgress.done();
+            this.show = true;
+          });
+        }
         if (getLyric) this.getRandomLyric();
       });
     },

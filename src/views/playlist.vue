@@ -393,16 +393,21 @@ export default {
           return t;
       });
       trackIDs = trackIDs.map((t) => t.id);
-      getTrackDetail(trackIDs.join(",")).then((data) => {
-        this.tracks.push(...data.songs);
-        this.lastLoadedTrackIndex += trackIDs.length;
-        this.loadingMore = false;
-      });
+      if (trackIDs.length > 0) {
+        getTrackDetail(trackIDs.join(",")).then((data) => {
+          this.tracks.push(...data.songs);
+          this.lastLoadedTrackIndex += trackIDs.length;
+          this.loadingMore = false;
+        });
+      }
     },
     handleScroll(e) {
       let dom = document.querySelector("html");
       let scrollHeight = Math.max(dom.scrollHeight, dom.scrollHeight);
-      let scrollTop = e.target.scrollingElement.scrollTop;
+      let scrollTop = 0;
+      if (e.target.scrollingElement) {
+        scrollTop = e.target.scrollingElement.scrollTop;
+      }
       let clientHeight =
         dom.innerHeight || Math.min(dom.clientHeight, dom.clientHeight);
       if (clientHeight + scrollTop + 200 >= scrollHeight) {
