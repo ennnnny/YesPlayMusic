@@ -177,7 +177,7 @@ export default {
       if (this.player.currentTrack.al) {
         return this.player.currentTrack.al.picUrl + "?param=1024y1024";
       } else {
-        return '';
+        return "";
       }
     },
     progress: {
