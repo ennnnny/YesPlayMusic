@@ -129,7 +129,8 @@
               v-for="(line, index) in lyricWithTranslation"
               :key="index"
               :id="`line${index}`"
-              v-html="formatLine(line)"
+              @click="seek(line.time)"
+              ><span v-html="formatLine(line)"></span
             ></div>
           </div>
         </transition>
@@ -174,7 +175,7 @@ export default {
     },
     imageUrl() {
       if (this.player.currentTrack.al) {
-        return this.player.currentTrack.al.picUrl + "?param=1024x1024";
+        return this.player.currentTrack.al.picUrl + "?param=1024y1024";
       } else {
         return '';
       }
@@ -255,7 +256,7 @@ export default {
             this.tlyric = [];
             return false;
           } else {
-            let {lyric, tlyric} = lyricParser(data);
+            let { lyric, tlyric } = lyricParser(data);
             this.lyric = lyric;
             this.tlyric = tlyric;
             return true;
@@ -272,6 +273,10 @@ export default {
     },
     setSeek() {
       let value = this.$refs.progress.getValue();
+      this.$parent.$refs.player.setProgress(value);
+      this.$parent.$refs.player.player.seek(value);
+    },
+    seek(value) {
       this.$parent.$refs.player.setProgress(value);
       this.$parent.$refs.player.player.seek(value);
     },
@@ -299,9 +304,9 @@ export default {
       const showLyricsTranslation = this.$store.state.settings
         .showLyricsTranslation;
       if (showLyricsTranslation && line.contents[1]) {
-        return line.contents[0] + "<br/>" + line.contents[1];
+        return `<span>${line.contents[0]}<br/>${line.contents[1]}</span>`;
       } else {
-        return line.contents[0];
+        return `<span>${line.contents[0]}</span>`;
       }
     },
   },
@@ -443,7 +448,9 @@ export default {
   img {
     border-radius: 0.75em;
     width: 54vh;
+    height: 54vh;
     user-select: none;
+    object-fit: cover;
   }
   .shadow {
     position: absolute;
@@ -467,15 +474,24 @@ export default {
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding-left: 96px;
+    padding-left: 78px;
     max-width: 460px;
     overflow-y: auto;
     transition: 0.5s;
     .line {
-      margin-top: 38px;
-      opacity: 0.28;
+      // margin-top: 38px;
+      padding: 18px;
+      transition: 0.2s;
+      border-radius: 12px;
+      &:hover {
+        background: var(--color-secondary-bg);
+      }
+      span {
+        opacity: 0.28;
+        cursor: default;
+      }
     }
-    .highlight {
+    .highlight span {
       opacity: 0.98;
       transition: 0.5s;
     }
@@ -537,7 +553,7 @@ export default {
   transition: all 0.5s ease;
 }
 .slide-fade-leave-active {
-  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.5s cubic-bezier(0.2, 0.2, 0, 1);
 }
 .slide-fade-enter,
 .slide-fade-leave-to {

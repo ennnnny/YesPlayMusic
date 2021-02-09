@@ -40,6 +40,8 @@ Electron 版本由 [@hawtim](https://github.com/hawtim) 和 [@qier222](https://g
 
 访问本项目的 [Releases](https://github.com/qier222/YesPlayMusic/releases) 页面下载安装包，或者访问 [镜像下载站 (大陆访问更快)](https://dl.qier222.com/YesPlayMusic/) 下载。
 
+macOS 用户也可以通过 `brew install --cask yesplaymusic` 来安装。
+
 ## ⚙️ 部署至服务器
 
 除了下载安装包使用，你还可以将本项目部署到你的服务器上。
@@ -83,6 +85,13 @@ yarn run build
 本项目仅供个人学习研究使用，禁止用于商业及非法用途。
 
 基于 [MIT license](https://opensource.org/licenses/MIT) 许可进行开源。
+
+## 灵感来源
+
+- [Apple Music](https://music.apple.com)
+- [YouTube Music](https://music.youtube.com)
+- [Spotify](https://www.spotify.com)
+- [网易云音乐](https://music.163.com)
 
 ## 🖼️ 截图
 

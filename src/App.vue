@@ -16,7 +16,7 @@
     <Toast />
     <ModalAddTrackToPlaylist v-if="isAccountLoggedIn" />
     <ModalNewPlaylist v-if="isAccountLoggedIn" />
-    <transition name="slide-up">
+    <transition name="slide-up" v-if="this.$store.state.player.enabled">
       <Lyrics v-show="this.$store.state.showLyrics" />
     </transition>
   </div>
@@ -410,6 +410,10 @@ a {
 ::-webkit-scrollbar-thumb {
   -webkit-border-radius: 10px;
   border-radius: 10px;
+  background: rgba(128, 128, 128, 0.38);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
   background: var(--color-secondary-bg);
 }
 

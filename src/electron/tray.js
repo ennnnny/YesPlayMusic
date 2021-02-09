@@ -14,21 +14,31 @@ export function createTray(win) {
   tray.setToolTip("YesPlayMusic");
 
   tray.on("click", () => {
-    if (win && win.isVisible()) {
-      win.hide();
-    } else {
-      win.show();
-    }
+    win.show();
+    tray.destroy();
   });
 
   tray.on("right-click", () => {
     const contextMenu = Menu.buildFromTemplate([
       {
-        label: "Quit",
-        click: () => {
-          app.exit();
+          label: "播放/暂停",
+          click: () => {
+            win.webContents.send("play");
+          },
         },
-      },
+        {
+          label: "下一首",
+          accelerator: "CmdOrCtrl+Right",
+          click: () => {
+            win.webContents.send("next");
+          },
+        },
+        {
+          label: "退出",
+          click: () => {
+            app.exit();
+          },
+        },
     ]);
     tray.popUpContextMenu(contextMenu);
   });

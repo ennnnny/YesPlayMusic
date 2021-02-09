@@ -38,7 +38,7 @@
               ref="searchInput"
               :placeholder="inputFocus ? '' : $t('nav.search')"
               v-model="keywords"
-              @keydown.enter="goToSearchPage"
+              @keydown.enter="doSearch"
               @focus="inputFocus = true"
               @blur="inputFocus = false"
             />
@@ -61,8 +61,8 @@ export default {
   data() {
     return {
       inputFocus: false,
-      keywords: "",
       langs: ["zh-CN", "en"],
+      keywords: "",
     };
   },
   computed: {
@@ -73,16 +73,17 @@ export default {
       if (where === "back") this.$router.go(-1);
       else this.$router.go(1);
     },
-    goToSearchPage() {
+    doSearch() {
       if (!this.keywords) return;
       if (
         this.$route.name === "search" &&
-        this.$route.query.keywords === this.keywords
-      )
+        this.$route.params.keywords === this.keywords
+      ) {
         return;
+      }
       this.$router.push({
         name: "search",
-        query: { keywords: this.keywords },
+        params: { keywords: this.keywords },
       });
     },
   },

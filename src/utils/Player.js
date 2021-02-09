@@ -103,9 +103,14 @@ export default class {
   _init() {
     Howler.autoUnlock = false;
     this._loadSelfFromLocalStorage();
-    if (this._currentTrack.id) {
-      this._replaceCurrentTrack(this._currentTrack.id, false); // update audio source and init howler
-    }
+    this._replaceCurrentTrack(this._currentTrack.id, false).then(() => {
+      this._howler.seek(localStorage.getItem("playerCurrentTrackTime") ?? 0);
+      setInterval(
+        () =>
+          localStorage.setItem("playerCurrentTrackTime", this._howler.seek()),
+        1000
+      );
+    }); // update audio source and init howler
     this._initMediaSession();
     Howler.volume(this.volume);
   }
@@ -152,7 +157,10 @@ export default class {
       html5: true,
       format: ["mp3", "flac"],
     });
-    if (autoplay) this.play();
+    if (autoplay) {
+      this.play();
+      document.title = `${this._currentTrack.name} · ${this._currentTrack.ar[0].name} - YesPlayMusic`;
+    }
     this._howler.once("end", () => {
       this._nextTrackCallback();
     });
@@ -171,8 +179,7 @@ export default class {
         if (!result.data[0]) return null;
         if (!result.data[0].url) return null;
         // if (result.data[0].freeTrialInfo !== null) return null; // 跳过只能试听的歌曲
-        // const source = result.data[0].url.replace(/^http:/, "https:");
-        const source = result.data[0].url;
+        const source = result.data[0].url.replace(/^http:/, "https:");
         if (store.state.settings.automaticallyCacheSongs) {
           cacheTrack(track.id, source);
         }
@@ -210,8 +217,7 @@ export default class {
       let track = data.songs[0];
       this._currentTrack = track;
       this._updateMediaSessionMetaData(track);
-      document.title = `${track.name} · ${track.ar[0].name} - 泡面音乐`;
-      this._getAudioSource(track).then((source) => {
+      return this._getAudioSource(track).then((source) => {
         if (source) {
           this._playAudioSource(source, autoplay);
           return source;
@@ -271,7 +277,7 @@ export default class {
   _nextTrackCallback() {
     this._scrobble(true);
     if (this.repeatMode === "one") {
-      this._howler.play();
+      this._replaceCurrentTrack(this._currentTrack.id);
     } else {
       this.playNextTrack();
     }
@@ -315,14 +321,16 @@ export default class {
   pause() {
     this._howler.pause();
     this._playing = false;
+    document.title = "泡面音乐";
   }
   play() {
     this._howler.play();
     this._playing = true;
+    document.title = `${this._currentTrack.name} · ${this._currentTrack.ar[0].name} - YesPlayMusic`;
   }
   seek(time = null) {
     if (time !== null) this._howler.seek(time);
-    return this._howler.seek();
+    return this._howler === null ? 0 : this._howler.seek();
   }
   mute() {
     if (this.volume === 0) {
