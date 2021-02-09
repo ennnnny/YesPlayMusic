@@ -143,7 +143,7 @@ export function createMenu(win) {
               {
                 role: "window",
                 id: "window",
-                label: "YesPlayMusic",
+                label: "泡面音乐",
                 type: "checkbox",
                 checked: true,
                 click: () => {

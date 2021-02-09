@@ -11,7 +11,7 @@ export function createTray(win) {
     });
   let tray = new Tray(icon);
 
-  tray.setToolTip("YesPlayMusic");
+  tray.setToolTip("泡面音乐");
 
   tray.on("click", () => {
     win.show();

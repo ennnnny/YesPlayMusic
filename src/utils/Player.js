@@ -161,7 +161,7 @@ export default class {
     });
     if (autoplay) {
       this.play();
-      document.title = `${this._currentTrack.name} · ${this._currentTrack.ar[0].name} - YesPlayMusic`;
+      document.title = `${this._currentTrack.name} · ${this._currentTrack.ar[0].name} - 泡面音乐`;
     }
     this._howler.once("end", () => {
       this._nextTrackCallback();
@@ -328,7 +328,7 @@ export default class {
   play() {
     this._howler.play();
     this._playing = true;
-    document.title = `${this._currentTrack.name} · ${this._currentTrack.ar[0].name} - YesPlayMusic`;
+    document.title = `${this._currentTrack.name} · ${this._currentTrack.ar[0].name} - 泡面音乐`;
   }
   seek(time = null) {
     if (time !== null) this._howler.seek(time);
