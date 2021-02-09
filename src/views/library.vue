@@ -1,9 +1,12 @@
 <template>
   <div v-show="show">
     <h1>
-      <img class="head" :src="data.user.avatarUrl | resizeImage" />{{
+      <img class="avatar" :src="data.user.avatarUrl | resizeImage" />{{
         data.user.nickname
       }}{{ $t("library.sLibrary") }}
+      <button-icon @click.native="showUserProfileMenu"
+        ><svg-icon icon-class="arrow-right"
+      /></button-icon>
     </h1>
     <div class="section-one">
       <div class="liked-songs" @click="goToLikedSongsList">
@@ -109,6 +112,15 @@
         <MvRow :mvs="mvs" />
       </div>
     </div>
+
+    <ContextMenu ref="userProfileMenu">
+      <div class="item" @click="settings"
+        ><svg-icon icon-class="settings" />设置</div
+      >
+      <div class="item" @click="logout"
+        ><svg-icon icon-class="logout" />退出登录</div
+      >
+    </ContextMenu>
   </div>
 </template>
 
@@ -124,9 +136,11 @@ import {
 } from "@/api/user";
 import { randomNum, dailyTask } from "@/utils/common";
 import { getPlaylistDetail } from "@/api/playlist";
-import { isAccountLoggedIn } from "@/utils/auth";
+import { isAccountLoggedIn, doLogout } from "@/utils/auth";
 import NProgress from "nprogress";
 
+import ContextMenu from "@/components/ContextMenu.vue";
+import ButtonIcon from "@/components/ButtonIcon.vue";
 import TrackList from "@/components/TrackList.vue";
 import CoverRow from "@/components/CoverRow.vue";
 import SvgIcon from "@/components/SvgIcon.vue";
@@ -134,7 +148,7 @@ import MvRow from "@/components/MvRow.vue";
 
 export default {
   name: "Library",
-  components: { SvgIcon, CoverRow, TrackList, MvRow },
+  components: { SvgIcon, CoverRow, TrackList, MvRow, ButtonIcon, ContextMenu },
   data() {
     return {
       show: false,
@@ -160,7 +174,20 @@ export default {
     });
   },
   activated() {
-    this.loadData();
+    if (!this.data.likedSongPlaylistID) {
+      userPlaylist({
+        uid: this.data.user.userId,
+        limit: 1,
+      }).then((data) => {
+        this.updateData({
+          key: "likedSongPlaylistID",
+          value: data.playlist[0].id,
+        });
+        this.loadData();
+      });
+    } else {
+      this.loadData();
+    }
     dailyTask();
   },
   computed: {
@@ -190,7 +217,7 @@ export default {
   },
   methods: {
     ...mapActions(["showToast"]),
-    ...mapMutations(["updateModal"]),
+    ...mapMutations(["updateModal", "updateData"]),
     playLikedSongs() {
       this.$store.state.player.playPlaylistByID(
         this.playlists[0].id,
@@ -248,6 +275,11 @@ export default {
     getLikedSongs(getLyric = true) {
       getPlaylistDetail(this.data.likedSongPlaylistID, true).then((data) => {
         this.likedSongsPlaylist = data.playlist;
+        if (data.playlist.trackIds.length === 0) {
+          NProgress.done();
+          this.show = true;
+          return;
+        }
         let TrackIDs = data.playlist.trackIds.slice(0, 12).map((t) => t.id);
         this.likedSongIDs = TrackIDs;
         getTrackDetail(this.likedSongIDs.join(",")).then((data) => {
@@ -297,6 +329,17 @@ export default {
         value: true,
       });
     },
+    showUserProfileMenu(e) {
+      this.$refs.userProfileMenu.openMenu(e);
+    },
+    logout() {
+      if (!confirm("确定要退出登录吗？")) return;
+      doLogout();
+      this.$router.push({ name: "home" });
+    },
+    settings() {
+      this.$router.push({ name: "settings" });
+    },
   },
   watch: {
     likedSongsInState() {
@@ -310,12 +353,20 @@ export default {
 h1 {
   font-size: 42px;
   color: var(--color-text);
-  .head {
+  display: flex;
+  align-items: center;
+  .avatar {
     height: 44px;
     margin-right: 12px;
     vertical-align: -7px;
     border-radius: 50%;
     border: rgba(0, 0, 0, 0.2);
+  }
+
+  .svg-icon {
+    width: 28px;
+    height: 28px;
+    opacity: 0.18;
   }
 }
 

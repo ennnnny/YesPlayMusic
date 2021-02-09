@@ -68,16 +68,29 @@ module.exports = {
           output: "dist_electron",
         },
         mac: {
+          target: [
+            {
+              target: "dmg",
+              arch: ["arm64", "x64"],
+            },
+            {
+              target: "zip",
+              arch: ["arm64", "x64"],
+              // arch: ["universal"]
+            },
+          ],
+          artifactName: "${productName}-${arch}.${ext}",
           category: "public.app-category.music",
           darkModeSupport: true,
         },
         win: {
+          target: ["nsis", "portable"],
           publisherName: "YesPlayMusic",
           icon: "build/icons/icon.ico",
           publish: ["github"],
         },
         linux: {
-          target: ["AppImage", "tar.gz", "deb", "rpm", "snap"],
+          target: ["AppImage", "tar.gz", "deb", "rpm", "snap", "pacman"],
           category: "Music",
           icon: "./build/icon.icns",
         },

@@ -17,6 +17,7 @@
               v-model="countryCode"
               @focus="inputFocus = 'phone'"
               @blur="inputFocus = ''"
+              @keyup.enter="login"
             />
             <input
               id="phoneNumber"
@@ -24,6 +25,7 @@
               v-model="phoneNumber"
               @focus="inputFocus = 'phone'"
               @blur="inputFocus = ''"
+              @keyup.enter="login"
             />
           </div>
         </div>
@@ -39,6 +41,7 @@
               v-model="email"
               @focus="inputFocus = 'email'"
               @blur="inputFocus = ''"
+              @keyup.enter="login"
             />
           </div>
         </div>
@@ -56,6 +59,7 @@
               v-model="password"
               @focus="inputFocus = 'password'"
               @blur="inputFocus = ''"
+              @keyup.enter="login"
             />
           </div>
         </div>
@@ -91,7 +95,6 @@ import NProgress from "nprogress";
 import { loginWithPhone, loginWithEmail } from "@/api/auth";
 import md5 from "crypto-js/md5";
 import { mapMutations } from "vuex";
-import { userPlaylist } from "@/api/user";
 
 export default {
   name: "Login",
@@ -120,47 +123,34 @@ export default {
   },
   methods: {
     ...mapMutations(["updateData"]),
-    afterLogin() {
-      this.updateData({ key: "loginMode", value: "account" });
-      userPlaylist({
-        uid: this.$store.state.data.user.userId,
-        limit: 1,
-      }).then((data) => {
-        this.updateData({
-          key: "likedSongPlaylistID",
-          value: data.playlist[0].id,
-        });
-        this.$router.push({ path: "/library" });
-      });
-    },
     validatePhone() {
       if (
         this.countryCode === "" ||
         this.phone === "" ||
         this.password === ""
       ) {
-        alert("国家区号、手机或密码不正确");
+        alert("国家区号或手机号不正确");
         this.processing = false;
         return false;
       }
       return true;
     },
     validateEmail() {
-      const emailReg = /^[A-Za-z0-9]+([_][A-Za-z0-9]+)*@([A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/;
+      const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (
         this.email === "" ||
         this.password === "" ||
         !emailReg.test(this.email)
       ) {
-        alert("邮箱或密码不正确");
+        alert("邮箱不正确");
         return false;
       }
       return true;
     },
     login() {
-      this.processing = true;
       if (this.mode === "phone") {
         this.processing = this.validatePhone();
+        if (!this.processing) return;
         loginWithPhone({
           countrycode: this.countryCode.replace("+", "").replace(/\s/g, ""),
           phone: this.phoneNumber.replace(/\s/g, ""),
@@ -170,10 +160,11 @@ export default {
           .then(this.handleLoginResponse)
           .catch((error) => {
             this.processing = false;
-            alert(error);
+            alert(`发生错误，请检查你的账号密码是否正确\n${error}`);
           });
       } else {
         this.processing = this.validateEmail();
+        if (!this.processing) return;
         loginWithEmail({
           email: this.email.replace(/\s/g, ""),
           password: "fakePassword",
@@ -182,7 +173,7 @@ export default {
           .then(this.handleLoginResponse)
           .catch((error) => {
             this.processing = false;
-            alert(error);
+            alert(`发生错误，请检查你的账号密码是否正确\n${error}`);
           });
       }
     },
@@ -191,9 +182,14 @@ export default {
         this.processing = false;
         return;
       }
-      if (data.code !== 502) {
+      if (data.code === 200) {
         this.updateData({ key: "user", value: data.profile });
-        this.afterLogin();
+        this.updateData({ key: "loginMode", value: "account" });
+        this.$router.push({ path: "/library" });
+      } else {
+        this.processing = false;
+        console.log(data.msg);
+        alert(data.msg ?? data.message ?? "账号或密码错误，请检查");
       }
     },
   },
