@@ -103,14 +103,16 @@ export default class {
   _init() {
     Howler.autoUnlock = false;
     this._loadSelfFromLocalStorage();
-    this._replaceCurrentTrack(this._currentTrack.id, false).then(() => {
-      this._howler.seek(localStorage.getItem("playerCurrentTrackTime") ?? 0);
-      setInterval(
-        () =>
-          localStorage.setItem("playerCurrentTrackTime", this._howler.seek()),
-        1000
-      );
-    }); // update audio source and init howler
+    if (this._currentTrack.id) {
+      this._replaceCurrentTrack(this._currentTrack.id, false).then(() => {
+        this._howler.seek(localStorage.getItem("playerCurrentTrackTime") ?? 0);
+        setInterval(
+          () =>
+            localStorage.setItem("playerCurrentTrackTime", this._howler.seek()),
+          1000
+        );
+      }); // update audio source and init howler
+    }
     this._initMediaSession();
     Howler.volume(this.volume);
   }
